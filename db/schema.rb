@@ -10,21 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_17_091942) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_17_202834) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "composition_pianos", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.string "audio"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_composition_pianos_on_user_id"
-  end
-
   create_table "compositions", force: :cascade do |t|
     t.string "title"
-    t.string "hey_signature"
+    t.string "key_signature"
     t.bigint "user_id", null: false
     t.string "style"
     t.string "audio"
@@ -33,9 +25,17 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_17_091942) do
     t.index ["user_id"], name: "index_compositions_on_user_id"
   end
 
+  create_table "compositions_piano", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "audio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_compositions_piano_on_user_id"
+  end
+
   create_table "notes", force: :cascade do |t|
     t.string "key"
-    t.string "tempo"
+    t.integer "tempo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -75,12 +75,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_17_091942) do
 
   create_table "user_answers", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "preferences_id", null: false
+    t.bigint "preference_id", null: false
     t.bigint "question_id", null: false
     t.string "answer"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["preferences_id"], name: "index_user_answers_on_preferences_id"
+    t.index ["preference_id"], name: "index_user_answers_on_preference_id"
     t.index ["question_id"], name: "index_user_answers_on_question_id"
     t.index ["user_id"], name: "index_user_answers_on_user_id"
   end
@@ -97,14 +97,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_17_091942) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "composition_pianos", "users"
   add_foreign_key "compositions", "users"
+  add_foreign_key "compositions_piano", "users"
   add_foreign_key "preferences", "surveys"
   add_foreign_key "preferences", "users"
   add_foreign_key "questions", "surveys"
-  add_foreign_key "song_notes", "composition_pianos"
+  add_foreign_key "song_notes", "compositions_piano", column: "composition_piano_id"
   add_foreign_key "song_notes", "notes"
-  add_foreign_key "user_answers", "preferences", column: "preferences_id"
+  add_foreign_key "user_answers", "preferences"
   add_foreign_key "user_answers", "questions"
   add_foreign_key "user_answers", "users"
 end
