@@ -57,3 +57,20 @@ button {
   border-color: var(--hover);
   }
 }
+
+a {
+  text-decoration: none;
+  color: var(--color);
+  transition: 0.25s;
+  border-radius: 50px;
+  border: 2px solid var(--color);
+  background: none;
+  font-family: Tektur, Helvetica, sans-serif;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em;
+  &:hover,
+  &:focus {
+  border-color: var(--hover);
+  }
+}
