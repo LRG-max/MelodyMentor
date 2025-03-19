@@ -1,0 +1,43 @@
+<div class="composition-index">
+  <div>
+
+    <ul>
+      <li><h1><%= @composition.title %></h1></li>
+      <li><p>Key signature: <%= @composition.key_signature %></p></li>
+      <li><p>Genre: <%= @composition.style %></p></li>
+    </ul>
+
+  </div>
+
+<%# TO DO AUDIO %>
+<div class="composition-index players">
+
+  <button onclick="snd1.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd2.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd3.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd4.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd5.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd6.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd7.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd8.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+  <button onclick="snd9.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
+
+</div>
+<script>
+    const snd1 = new Audio("/audios/60bpm_Amin_PIANO_1barEnd.mp3");
+    const snd2 = new Audio("/audios/60bpm_Amin7_PIANO_2bar.mp3");
+    const snd3 = new Audio("/audios/60bpm_Bmin7_PIANO_1barEnd.mp3");
+    const snd4 = new Audio("/audios/60bpm_Bmin7_PIANO_2bar.mp3");
+    const snd5 = new Audio("/audios/60bpm_Bmin9_PIANO_2bar.mp3");
+    const snd6 = new Audio("/audios/60bpm_Cmaj7_PIANO_2bar.mp3");
+    const snd7 = new Audio("/audios/60bpm_Gadd2_PIANO_1barEnd.mp3");
+    const snd8 = new Audio("/audios/60bpm_Gmaj7_PIANO_1barEnd.mp3");
+    const snd9 = new Audio("/audios/60bpm_Gmaj7_PIANO_2bar.mp3");
+</script>
+
+
+
+
+  <h6><%= link_to "Retour", compositions_path %></h6>
+
+</div>

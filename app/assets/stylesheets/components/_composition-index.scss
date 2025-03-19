@@ -1,0 +1,36 @@
+.composition-index h1, h2, h3, h4, h5 {
+  text-align: center;
+  background-image: linear-gradient(0.45deg, #82e2f3, white);
+  color: transparent;
+  background-clip: text;
+  font-family: Tektur, Helvetica, sans-serif;
+}
+
+
+.composition-index p {
+  font-size: 1.2rem;
+  color : white;
+  font-family: Helvetica, sans-serif;
+}
+
+.composition-index{
+  padding: 30px;
+  color: white;
+  ul{
+    list-style-type: none;
+  }
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  h6 {
+    font-family: Tektur, Helvetica, sans-serif;
+    text-decoration: none;
+    padding-top: 100px;
+  }
+}
+
+.players{
+  padding: 40px;
+  font-size: 30px;
+}
