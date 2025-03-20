@@ -3,7 +3,9 @@
   <section class="hero">
     <h1>Composez votre musique en toute simplicité</h1>
     <p>Aucune connaissance en théorie musicale requise. Laissez-vous guider.</p>
-    <button class="button pulse">Commencer maintenant</button>
+    <%= link_to new_composition_path, class: "button pulse" do %>
+      Commencer maintenant
+    <% end %>
   </section>
 
   <!-- Fonctionnalités -->

@@ -1,6 +1,6 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
   <div class="container-fluid">
-    <%= link_to "#", class: "navbar-brand" do %>
+    <%= link_to root_path, class: "navbar-brand" do %>
       <%= image_tag "https://res.cloudinary.com/doxv7g7oq/image/upload/v1742223302/mcfijkdxck9z2qksqdph.png" %>
     <% end %>
 
@@ -12,12 +12,12 @@
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
           <li class="nav-item active">
-            <%= link_to "#", class: "nav-link" do %>
+            <%= link_to root_path, class: "nav-link" do %>
               <i class="fas fa-home"></i> Home
             <% end %>
           </li>
           <li class="nav-item">
-            <%= link_to "#", class: "nav-link" do %>
+            <%= link_to new_composition_path, class: "nav-link" do %>
               <i class="fa-solid fa-music"></i> Create
             <% end %>
                 <li class="nav-item dropdown">
