@@ -13,12 +13,16 @@
         <% if user_signed_in? %>
           <li class="nav-item active">
             <%= link_to root_path, class: "nav-link" do %>
-              <i class="fas fa-home"></i> Home
+              <i class="fas fa-home"></i> Accueil
             <% end %>
           </li>
           <li class="nav-item">
             <%= link_to new_composition_path, class: "nav-link" do %>
-              <i class="fa-solid fa-music"></i> Create
+              <i class="fa-solid fa-music"></i> Créer
+            <% end %>
+          <li class="nav-item">
+            <%= link_to compositions_path, class: "nav-link" do %>
+              <i class="fa-solid fa-microphone-lines"></i></i> Mes Compos
             <% end %>
                 <li class="nav-item dropdown">
                   <a href="#" class="avatar" id="navbarDropdown" data-bs-toggle="dropdown" aria-expanded="false">
