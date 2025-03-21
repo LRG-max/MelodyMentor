@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand-sm navbar-light navbar-lewagon">
   <div class="container-fluid">
     <%= link_to root_path, class: "navbar-brand" do %>
-      <%= image_tag "https://res.cloudinary.com/doxv7g7oq/image/upload/v1742223302/mcfijkdxck9z2qksqdph.png" %>
+      <%= image_tag "https://res.cloudinary.com/doxv7g7oq/image/upload/v1742588414/Color%C3%A9_Son_Vagues_Musique_App_Logo-removebg-preview_djm51j.png" %>
     <% end %>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +16,7 @@
               <i class="fas fa-home"></i> Home
             <% end %>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" id="my-profil">
             <%= link_to new_composition_path, class: "nav-link" do %>
               <i class="fa-solid fa-music"></i> Create
             <% end %>
@@ -32,7 +32,7 @@
             </li>
         <% else %>
           <li class="nav-item">
-            <%= link_to "Login", new_user_session_path, class: "nav-link" %>
+            <%= link_to "Login", new_user_session_path, class: "nav-link", id: "login" %>
           </li>
         <% end %>
       </ul>

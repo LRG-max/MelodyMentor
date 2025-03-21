@@ -1,10 +1,10 @@
 <div class="container">
   <div class="composition-index">
-    <h1>Mes Compositions</h1>
+    <h1 id="compositions-title">Mes Compositions</h1>
 
     <ul>
       <% @compositions.each do |composition| %>
-        <li><%= link_to composition.title, composition_path(composition) %></li>
+        <li class="composition-item"><%= link_to composition.title, composition_path(composition) %></li>
 
 
       <% end %>
