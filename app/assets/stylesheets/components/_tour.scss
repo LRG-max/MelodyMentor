@@ -1,0 +1,45 @@
+.shepherd-element {
+  z-index: 9999;
+}
+
+.shepherd-step {
+  margin-top: 10px;
+  left: 10px !important;
+  top: 10px !important;
+}
+
+.tour-step {
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 50px;
+  padding: 30px;
+}
+
+#start-tour {
+  position: fixed;
+  bottom: 20px; /* Distance par rapport au bas de la fenêtre */
+  right: 20px; /* Distance par rapport au bord droit */
+  background-image: linear-gradient(45deg, #82e2f3, #ffffff);
+  color: #14232A;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(130, 226, 243, 0.3);
+  font-family: Tektur, Helvetica, sans-serif;
+}
+
+#start-tour:hover {
+  background-image: linear-gradient(45deg, #62d2e7, #c0f0ff);
+  transform: scale(1.05); /* Effet de zoom */
+  box-shadow: 0 6px 15px rgba(130, 226, 243, 0.5);
+}
+
+#start-tour:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 5px rgba(130, 226, 243, 0.2);
+  transform: scale(1.05);
+}
