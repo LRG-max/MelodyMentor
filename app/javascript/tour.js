@@ -1,6 +1,6 @@
 import Shepherd from 'shepherd.js';
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
   const tour = new Shepherd.Tour({
     defaultStepOptions: {
       classes: 'tour-step',

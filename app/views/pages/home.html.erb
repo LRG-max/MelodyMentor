@@ -24,7 +24,9 @@
     </div>
   </section>
 
+<% if !user_signed_in? %>
   <button id="start-tour" class="btn btn-primary">Démarrer la visite</button>
+<% end %>
 
   <!-- Call to Action -->
   <section class="cta" id="cta-section">
