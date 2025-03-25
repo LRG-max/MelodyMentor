@@ -35,6 +35,16 @@ document.addEventListener("DOMContentLoaded", function () {
     ]
   });
 
+  tour.addStep({
+    title: 'Défi',
+    text: 'Un défi vous attend !',
+    attachTo: { element: '#button-action', on: 'bottom' },
+    buttons: [
+      { text: 'Précédent', action: tour.back },
+      { text: 'Terminer', action: tour.complete }
+    ]
+  });
+
   // Événement pour démarrer la visite
   const startTourButton = document.getElementById('start-tour');
   if (startTourButton) {
