@@ -1,0 +1,2 @@
+class DailyChallenge < ApplicationRecord
+end

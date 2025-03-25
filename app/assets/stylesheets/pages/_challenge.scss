@@ -1,0 +1,52 @@
+.challenge-title {
+  text-align: center;
+  font-family: Tektur, Helvetica, sans-serif;
+  color: #eff1f1;
+}
+
+.challenge-subtitle {
+  text-align: center;
+  font-family: Helvetica, sans-serif;
+  color: #000808;
+}
+.challenge-card {
+  background: linear-gradient(135deg, #fff, #f0f0f0);
+  padding: 30px;
+  border-radius: 50px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.challenge-description {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.difficulty-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.difficulty-badge.facile { background-color: #28a745; color: white; }
+.difficulty-badge.moyen { background-color: #ffc107; color: black; }
+.difficulty-badge.difficile { background-color: #dc3545; color: white; }
+
+.btn-primary {
+  background-color: #020418;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  border: none;
+  transition: background 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #e55e00;
+}
