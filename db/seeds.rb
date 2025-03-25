@@ -7,3 +7,46 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+puts "Nettoyage des anciens challenges..."
+Challenge.destroy_all
+
+puts "Création de challenges..."
+
+challenges_data = [
+  {
+    title: "Improviser sur une gamme mineure",
+    description: "Compose une mélodie de 8 mesures en utilisant uniquement la gamme mineure de La. Bonus si tu varies le rythme.",
+    difficulty: "medium",
+    active: true
+  },
+  {
+    title: "Créer un thème de film",
+    description: "Imagine que tu écris la musique d’ouverture d’un thriller. Écris une courte mélodie en mode mineur.",
+    difficulty: "hard",
+    active: true
+  },
+  {
+    title: "Défi des 3 notes",
+    description: "Crée une boucle mélodique en n'utilisant que 3 notes de ton choix. À toi de jouer sur le rythme et l'intensité.",
+    difficulty: "easy",
+    active: true
+  },
+  {
+    title: "Challenge silence",
+    description: "Écris une mélodie avec au moins 3 silences bien placés. Le vide peut aussi faire vibrer !",
+    difficulty: "medium",
+    active: true
+  },
+  {
+    title: "Le défi du rythme binaire",
+    description: "Compose une mélodie simple, mais uniquement avec des croches et des noires.",
+    difficulty: "easy",
+    active: false # volontairement inactif pour tester les filtres
+  }
+]
+
+Challenge.create!(challenges_data)
+
+puts "#{Challenge.count} challenges créés."
+puts "#{Challenge.where(active: true).count} challenges actifs."
