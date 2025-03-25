@@ -42,64 +42,72 @@
   </div>
 
   <script>
-    const recButton = document.getElementById('record');
-    const stopButton = document.getElementById('stop');
-    const downloadLink = document.getElementById('download');
-    const audioElement = document.querySelector("audio");
-    let mediaRecorder;
-    let audioChunks = [];
-    let audioContext;
-    let destination;
-    let sourceNodes = [];
+    document.addEventListener('turbo:load', () => {
+      const recButton = document.getElementById('record');
+      const stopButton = document.getElementById('stop');
+      const downloadLink = document.getElementById('download');
+      const audioElement = document.querySelector("audio");
+      let mediaRecorder;
+      let audioChunks = [];
+      let audioContext;
+      let destination;
+      let sourceNodes = [];
 
-    const audioArray = [
-      document.getElementById('snd1'),
-      document.getElementById('snd2'),
-      document.getElementById('snd3'),
-      document.getElementById('snd4'),
-      document.getElementById('snd5'),
-      document.getElementById('snd6'),
-      document.getElementById('snd7'),
-      document.getElementById('snd8'),
-      document.getElementById('snd9')
-    ];
+      if (recButton && !recButton.hasEventListener) {
+        recButton.addEventListener('click', async () => {
+          audioContext = new AudioContext();
+          destination = audioContext.createMediaStreamDestination();
+          mediaRecorder = new MediaRecorder(destination.stream);
+          mediaRecorder.start();
+          recButton.style.color = "red";
+          recButton.textContent = "En cours...";
+          audioChunks = [];
 
-    recButton.addEventListener('click', async () => {
-      audioContext = new AudioContext();
-      destination = audioContext.createMediaStreamDestination();
-      mediaRecorder = new MediaRecorder(destination.stream);
-      mediaRecorder.start();
-      recButton.style.color = "red";
-      recButton.textContent = "En cours...";
-      audioChunks = [];
+          const audioArray = [
+            document.getElementById('snd1'),
+            document.getElementById('snd2'),
+            document.getElementById('snd3'),
+            document.getElementById('snd4'),
+            document.getElementById('snd5'),
+            document.getElementById('snd6'),
+            document.getElementById('snd7'),
+            document.getElementById('snd8'),
+            document.getElementById('snd9')
+          ];
 
-      audioArray.forEach(audio => {
-        const source = audioContext.createMediaElementSource(audio);
-        source.connect(destination);
-        source.connect(audioContext.destination);
-        sourceNodes.push(source);
-      });
+          audioArray.forEach(audio => {
+            const source = audioContext.createMediaElementSource(audio);
+            source.connect(destination);
+            source.connect(audioContext.destination);
+            sourceNodes.push(source);
+          });
 
-      mediaRecorder.ondataavailable = event => {
-        audioChunks.push(event.data);
-      };
+          mediaRecorder.ondataavailable = event => {
+            audioChunks.push(event.data);
+          };
 
-      mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-        const arrayBuffer = await audioBlob.arrayBuffer();
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        const wavBlob = await audioBufferToWav(audioBuffer);
-        const audioURL = URL.createObjectURL(wavBlob);
-        audioElement.src = audioURL;
-        downloadLink.href = audioURL;
-        downloadLink.download = 'recording.wav';
-        recButton.style.color = "";
-        recButton.innerHTML = '<i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer';
-      };
-    });
+          mediaRecorder.onstop = async () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const arrayBuffer = await audioBlob.arrayBuffer();
+            const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+            const wavBlob = await audioBufferToWav(audioBuffer);
+            const audioURL = URL.createObjectURL(wavBlob);
+            audioElement.src = audioURL;
+            downloadLink.href = audioURL;
+            downloadLink.download = 'recording.wav';
+            recButton.style.color = "";
+            recButton.innerHTML = '<i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer';
+          };
+        });
 
-    stopButton.addEventListener('click', () => {
-      mediaRecorder.stop();
+        recButton.hasEventListener = true; // Prevent duplicate listeners
+      }
+
+      if (stopButton) {
+        stopButton.addEventListener('click', () => {
+          if (mediaRecorder) mediaRecorder.stop();
+        });
+      }
     });
 
     async function audioBufferToWav(audioBuffer) {
