@@ -10,6 +10,8 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+ActiveRecord::Schema[7.1].define(version: 2025_03_17_202834) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_24_140800) do
 ActiveRecord::Schema[7.1].define(version: 2025_03_25_191442) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -40,6 +42,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_25_191442) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_compositions_piano_on_user_id"
+  end
+
+  create_table "daily_challenges", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "difficulty"
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "notes", force: :cascade do |t|
@@ -94,6 +105,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_25_191442) do
     t.index ["user_id"], name: "index_user_answers_on_user_id"
   end
 
+  create_table "user_challenges", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "challenge_id", null: false
+    t.boolean "completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["challenge_id"], name: "index_user_challenges_on_challenge_id"
+    t.index ["user_id"], name: "index_user_challenges_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -116,4 +137,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_25_191442) do
   add_foreign_key "user_answers", "preferences"
   add_foreign_key "user_answers", "questions"
   add_foreign_key "user_answers", "users"
+  add_foreign_key "user_challenges", "challenges"
+  add_foreign_key "user_challenges", "users"
 end

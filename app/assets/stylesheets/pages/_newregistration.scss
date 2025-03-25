@@ -42,10 +42,10 @@
 
   .form-actions {
     text-align: center;
-    button {
-      background-color: #82e2f3;
-      color: white;
-      padding: 1em 2em;
+    .btn-submit {
+      --color: #82e2f3;
+      --hover: #82e2f3;
+      color: var(--color);
       border: 2px solid #82e2f3;
       border-radius: 50px;
       font-family: Tektur, Helvetica, sans-serif;
