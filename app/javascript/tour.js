@@ -1,6 +1,6 @@
 import Shepherd from 'shepherd.js';
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("turbo:load", function () {
   const tour = new Shepherd.Tour({
     defaultStepOptions: {
       classes: 'tour-step',
@@ -28,6 +28,16 @@ document.addEventListener("DOMContentLoaded", function () {
   tour.addStep({
     title: 'Création',
     text: 'Cliquez ici pour commencer à composer.',
+    attachTo: { element: '#button-action', on: 'bottom' },
+    buttons: [
+      { text: 'Précédent', action: tour.back },
+      { text: 'Terminer', action: tour.complete }
+    ]
+  });
+
+  tour.addStep({
+    title: 'Défi',
+    text: 'Un défi vous attend !',
     attachTo: { element: '#button-action', on: 'bottom' },
     buttons: [
       { text: 'Précédent', action: tour.back },
