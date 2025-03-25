@@ -1,36 +1,39 @@
-<div class="composition-index">
+<div class="composition">
   <div>
     <ul>
       <li><h1><%= @composition.title %></h1></li>
-      <li><p>Key signature: <%= @composition.key_signature %></p></li>
-      <li><p>Genre: <%= @composition.style %></p></li>
+      <%# <li><p>Key signature: <%= @composition.key_signature %></p></li>
+      <%# <li><p>Genre: <%= @composition.style %></p></li>
     </ul>
   </div>
 
-  <div id="records" style="border: 1px solid #82e2f3">
-    <button id="record"><i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer</button>
-    <button id="stop"><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
-    <audio controls></audio>
-    <a id="download" href="" download><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
-  </div>
 
-  <div class="composition-index players">
+<div id="records">
+  <button id="record" ><i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer</button>
+  <button id="stop" ><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
+  <audio controls ></audio>
+  <a id="download" href="" download><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
+</div>
+
+
+  <div class="composition players">
     <% audio_files = [
-      { src: "/audios/60bpm_Amin_PIANO_1barEnd.mp3", id: "snd1" },
-      { src: "/audios/60bpm_Amin7_PIANO_2bar.mp3", id: "snd2" },
-      { src: "/audios/60bpm_Bmin7_PIANO_1barEnd.mp3", id: "snd3" },
-      { src: "/audios/60bpm_Bmin7_PIANO_2bar.mp3", id: "snd4" },
-      { src: "/audios/60bpm_Bmin9_PIANO_2bar.mp3", id: "snd5" },
-      { src: "/audios/60bpm_Cmaj7_PIANO_2bar.mp3", id: "snd6" },
-      { src: "/audios/60bpm_Gadd2_PIANO_1barEnd.mp3", id: "snd7" },
-      { src: "/audios/60bpm_Gmaj7_PIANO_1barEnd.mp3", id: "snd8" },
-      { src: "/audios/60bpm_Gmaj7_PIANO_2bar.mp3", id: "snd9" }
+      { src: "/audios/Amin_1bar.mp3", id: "snd1" },
+      { src: "/audios/Amin7_2bar.mp3", id: "snd2" },
+      { src: "/audios/Bmin7_1bar.mp3", id: "snd3" },
+      { src: "/audios/Bmin7_2bar.mp3", id: "snd4" },
+      { src: "/audios/Bmin9_2bar.mp3", id: "snd5" },
+      { src: "/audios/Cmaj7_2bar.mp3", id: "snd6" },
+      { src: "/audios/Gadd2_1bar.mp3", id: "snd7" },
+      { src: "/audios/Gmaj7_1bar.mp3", id: "snd8" },
+      { src: "/audios/Gmaj7_2bar.mp3", id: "snd9" }
     ] %>
 
     <% audio_files.each do |audio| %>
       <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
-      <button onclick="document.getElementById('<%= audio[:id] %>').play()">
-        <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> <%= filename %>
+      <button class="audio-button" onclick="document.getElementById('<%= audio[:id] %>').play()">
+        <i class="fa-solid fa-circle-play"></i>
+        <div><%= filename %></div>
       </button>
       <audio id="<%= audio[:id] %>">
         <source src="<%= audio[:src] %>" type="audio/mp3">
@@ -91,7 +94,7 @@
         downloadLink.href = audioURL;
         downloadLink.download = 'recording.wav';
         recButton.style.color = "";
-        recButton.textContent = "Enregistrer";
+        recButton.innerHTML = '<i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer';
       };
     });
 

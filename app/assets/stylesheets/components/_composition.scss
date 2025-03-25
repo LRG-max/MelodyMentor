@@ -1,0 +1,70 @@
+.composition h1, h2, h3, h4, h5 {
+  text-align: center;
+  background-image: linear-gradient(0.45deg, #82e2f3, white);
+  color: transparent;
+  background-clip: text;
+  font-family: Tektur, Helvetica, sans-serif;
+}
+
+.composition {
+
+  color: white;
+
+  ul{
+    list-style-type: none;
+  }
+  a {
+    text-decoration: none;
+    color: white;
+  }
+  h6 {
+    font-family: Tektur, Helvetica, sans-serif;
+    text-decoration: none;
+    padding-top: 100px;
+  }
+}
+
+#records {
+  display: flex;
+  flex-direction: row; /* Arrange elements in a row */
+  align-items: center; /* Align elements vertically on the same line */
+  justify-content: center; /* Center elements horizontally within the container */
+  gap: 10px; /* Add spacing between elements */
+  height: auto; /* Adjust height as needed */
+  border: #82e2f3 solid 2px; /* Add a border around the container */
+  border-radius: 50px; /* Add rounded corners to the container */
+  width: fit-content;
+  margin: 0px auto; /* Center the container horizontally */
+  margin-top: 50px;
+}
+
+#records button {
+  color: white;
+  background: none;
+  border: none;
+  font-family: Tektur, Helvetica, sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+
+/* BOUTONS SAMPLES AUDIO */
+
+button.audio-button {
+  background: none;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+button.audio-button i { /* icons */
+  font-size: 4rem;
+  color: #82e2f3;
+}
+
+button.audio-button div { /* Filename */
+  font-size: 14px;
+  font-style: italic;
+  color: white;
+  margin-top: 10px; /* Spacing between icon and text */
+}
