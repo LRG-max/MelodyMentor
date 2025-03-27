@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_03_17_202834) do
-ActiveRecord::Schema[7.1].define(version: 2025_03_24_140800) do
-ActiveRecord::Schema[7.1].define(version: 2025_03_25_191442) do
+ActiveRecord::Schema[7.1].define(version: 2025_03_27_095716) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -33,6 +31,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_25_191442) do
     t.string "audio"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "duration"
+    t.string "audio_url"
     t.index ["user_id"], name: "index_compositions_on_user_id"
   end
 

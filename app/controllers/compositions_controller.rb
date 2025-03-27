@@ -17,6 +17,16 @@ class CompositionsController < ApplicationController
     end
   end
 
+  def destroy
+    @composition = Composition.find(params[:id])
+    @composition.destroy
+
+    respond_to do |format|
+      format.html { redirect_to compositions_path, notice: "Composition supprimée." }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@composition) }
+    end
+  end
+
   def show
     @composition = Composition.find(params[:id])
   end

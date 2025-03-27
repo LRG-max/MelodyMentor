@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
 
-  resources :compositions, only: [:create, :index, :new, :show]
+  resources :compositions, only: [:create, :index, :destroy, :new, :show]
 
   resources :challenges, only: [:index, :show]
 
