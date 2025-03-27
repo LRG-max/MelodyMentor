@@ -1,0 +1,116 @@
+@import "home";
+
+.composition-item {
+  background: rgba(130, 226, 243, 0.1);
+  border: 1px solid #82e2f3;
+  border-radius: 50px;
+  padding: 15px;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+
+  &:hover {
+    transform: scale(1.02);
+    background: rgba(130, 226, 243, 0.15);
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 0;
+    text-align: center;
+  }
+
+  .composition-meta {
+    font-size: 0.8rem;
+    color: #ccc;
+    margin-top: 5px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .composition-audio {
+    width: 100%;
+    margin-top: 8px;
+    display: block;
+  }
+
+  .no-audio {
+    font-size: 0.8rem;
+    color: #ff6961;
+    margin-top: 8px;
+  }
+}
+
+#compositions-title {
+  margin-bottom: 60px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 25px;
+  right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.dropdown-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #82e2f3;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 25px;
+  right: 0;
+  background-color: #000412;
+  border: 1px solid #82e2f3;
+  border-radius: 20px;
+  min-width: 150px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  font-size: 0.5rem;
+  padding: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 8px 10px;
+  text-align: left;
+  color: #333;
+  text-decoration: none;
+  font-size: 1rem;
+  display: block;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(130, 226, 243, 0.2);
+}
+
+button.dropdown-item {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+button.dropdown-item:hover {
+  background-color: rgba(255, 105, 97, 0.1);
+}
+
+.composition-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); // Ajuste le nombre de colonnes automatiquement
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
