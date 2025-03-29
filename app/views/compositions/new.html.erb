@@ -1,12 +1,30 @@
-<div class="container">
-  <div class="form text-white">
-    <%= simple_form_for(@composition) do |f| %>
-      <%= f.input :title %>
-      <%= f.input :key_signature %>
-      <%= f.input :style %>
-      <%= f.submit %>
-    <% end %>
+<div class="composition-new-container">
+  <h2>Configure ta compo !</h2>
 
-  </div>
+  <%= simple_form_for(@composition) do |f| %>
 
+    <div class="form-inputs">
+      <%= f.input :title, label: "Titre de la composition" %>
+
+      <%= f.input :key_signature,
+                  label: "Note de départ (tonalité)",
+                  as: :select,
+                  input_html: { class: "form-control" },
+                  collection: %w[DO DO# RE RE# MI FA FA# SOL SOL# LA LA# SI],
+                  prompt: "Choisir une note" %>
+
+      <%= f.input :mood,
+                  label: "Humeur musicale",
+                  as: :select,
+                  input_html: { class: "form-control" },
+                  collection: [["Heureux (majeur)", "majeur"], ["Triste (mineur)", "mineur"]],
+                  prompt: "Choisir une humeur" %>
+
+      <%= f.input :style, label: "Style musical" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, "Enregistrer la composition", class: "btn-submit" %>
+    </div>
+  <% end %>
 </div>
