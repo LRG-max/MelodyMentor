@@ -3,7 +3,7 @@
 
   <%= simple_form_for(@composition) do |f| %>
 
-    <div class="form-inputs">
+    <div class="form-inputs composition-item"">
       <%= f.input :title, label: "Titre de la composition" %>
 
       <%= f.input :key_signature,
@@ -17,10 +17,15 @@
                   label: "Humeur musicale",
                   as: :select,
                   input_html: { class: "form-control" },
-                  collection: [["Heureux (majeur)", "majeur"], ["Triste (mineur)", "mineur"]],
+                  collection: [["😄 Heureux (majeur)", "majeur"], ["😔 Triste (mineur)", "mineur"]],
                   prompt: "Choisir une humeur" %>
 
-      <%= f.input :style, label: "Style musical" %>
+      <%= f.input :style,
+            label: "Instrument principal",
+            as: :select,
+            input_html: { class: "form-control" },
+            collection: [["🎹 Piano", "Piano"], ["🎸 Guitare", "Guitare"]],
+            prompt: "Choisir un instrument" %>
     </div>
 
     <div class="form-actions">
