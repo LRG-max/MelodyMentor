@@ -4,7 +4,7 @@ class CompositionsController < ApplicationController
   end
 
   def new
-    @composition = Composition.new
+    @composition = Composition.new(key_signature: nil, mood: nil)
   end
 
   def create
@@ -34,6 +34,6 @@ class CompositionsController < ApplicationController
   private
 
   def composition_params
-    params.require(:composition).permit(:title, :key_signature, :style)
+    params.require(:composition).permit(:title, :key_signature, :style, :mood)
   end
 end
