@@ -4,7 +4,7 @@ class CompositionsController < ApplicationController
   end
 
   def new
-    @composition = Composition.new(key_signature: nil, mood: nil)
+    @composition = Composition.new(key_signature: nil, style: nil, mood: nil)
   end
 
   def create
