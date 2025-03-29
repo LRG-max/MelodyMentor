@@ -1,0 +1,15 @@
+.full-card-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(130, 226, 243, 0.4);
+  }
+
+  h3, p, span {
+    pointer-events: none;
+  }
+}
