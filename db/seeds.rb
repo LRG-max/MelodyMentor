@@ -15,8 +15,8 @@ Question.destroy_all
 survey = Survey.create
 
 # Création des questions associées au sondage
-Question.create(survey_id: survey.id, question: "Quelle est la musique que tu écoutes en boucle en ce moment ?")
-Question.create(survey_id: survey.id, question: "Quels sont tes 3 groupes préférés du moment ?")
+
+Question.create(survey_id: survey.id, question: "Quelle est ton humeur ?")
 Question.create(survey_id: survey.id, question: "Sais-tu situer le DO sur un piano ?")
 
 puts "Données seeds mises à jour avec succès !"

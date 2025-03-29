@@ -1,12 +1,11 @@
 <div class="container">
   <div class="form text-white">
 
-    <%= simple_form_for(@preference) do |f| %>
-      <%= f.input :mood_preferences %>
-      <%= f.input :composition_experience %>
-      <%= f.submit %>
+    <%= simple_form_for [@preference] ,url: preferences_path do |f| %>
+        <%= f.input :mood_preference, as: :radio_buttons, collection: [["Gaie", true], ["Triste", false]], label: @questions.first.question %>
+        <%= f.input :composition_experience, as: :radio_buttons, collection: [["Oui", true], ["Non", false]], label: @questions.last.question %>
+        <%= f.submit %>
     <% end %>
-
 
   </div>
 
