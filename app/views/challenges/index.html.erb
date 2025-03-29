@@ -1,5 +1,6 @@
+<div class="container">
+  <div class="composition-index">
 <h1 class="challenge-title">🥁 Relève un défi ! 🥁</h1>
-
 <% if @current_challenge %>
   <%= link_to challenge_path(@current_challenge) do %>
   <div class="challenge-card composition-item full-card-link">
@@ -15,3 +16,5 @@
 <% else %>
   <p class="no-challenge">Aucun défi disponible pour le moment.</p>
 <% end %>
+</div>
+</div>
