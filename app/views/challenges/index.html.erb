@@ -1,16 +1,17 @@
 <h1 class="challenge-title">🥁 Relève un défi ! 🥁</h1>
 
 <% if @current_challenge %>
-  <div class="challenge-card">
-    <h3 class="challenge-subtitle"><%= @current_challenge.title %></h3>
-    <p class="challenge-description"><%= @current_challenge.description %></p>
+  <%= link_to challenge_path(@current_challenge) do %>
+  <div class="challenge-card composition-item full-card-link">
+    <h3><%= @current_challenge.title %></h3>
+    <p><%= @current_challenge.description %></p>
 
     <span class="difficulty-badge <%= @current_challenge.difficulty.downcase %>">
       Difficulté : <%= @current_challenge.difficulty %>
     </span>
 
-    <%= link_to "Voir le défi", challenge_path(@current_challenge), class: "btn-primary" %>
   </div>
+  <% end %>
 <% else %>
   <p class="no-challenge">Aucun défi disponible pour le moment.</p>
 <% end %>

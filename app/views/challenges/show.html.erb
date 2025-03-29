@@ -1,0 +1,10 @@
+<h1><%= @challenge.title %></h1>
+<p><%= @challenge.description %></p>
+
+<span class="difficulty-badge <%= @challenge.difficulty.downcase %>">
+  Difficulté : <%= @challenge.difficulty %>
+</span>
+
+<%= render 'shared/audio_composer' %>
+
+<%= link_to "Retour", challenges_path, class: "btn-primary" %>
