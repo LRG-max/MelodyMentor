@@ -1,5 +1,4 @@
 class PreferencesController < ApplicationController
-
   def new
     @preference = Preference.new
     @questions = Question.all
@@ -17,6 +16,6 @@ class PreferencesController < ApplicationController
   private
 
   def preference_params
-
+    params.require(:preference).permit(:mood_preference, :composition_experience)
   end
 end
