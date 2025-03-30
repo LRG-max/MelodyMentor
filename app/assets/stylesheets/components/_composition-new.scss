@@ -2,12 +2,11 @@
 
 
 .composition-new-container {
-  max-width: 1200px;
-  margin: 0 auto;
+
+  width: 100%;
+  max-width: 700px;
   padding: 40px 20px;
   background: transparent;
-  border-radius: 0;
-  box-shadow: none;
   color: #fff;
   font-family: Helvetica, sans-serif;
 
@@ -72,4 +71,12 @@
       }
     }
   }
+}
+
+.main-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
 }
