@@ -33,12 +33,12 @@
 
     <h3>Ma composition</h3>
     <ul id="selected-order">
-     <!-- Selected samples will appear here -->
+       <!-- This will be dynamically populated by JavaScript -->
     </ul>
-    <button id="play-sequence">Jouer ma composition</button>
+    <button class="button" id="play-sequence" >Jouer ma composition</button>
 
 
-    <h3>Samples</h3>
+    <h3>Accords à ajouter</h3>
     <ul id="sample-list">
       <% audio_files.each do |audio| %>
         <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
@@ -180,10 +180,10 @@
 
     /* AUDIO TIMELINE */
    document.addEventListener('turbo:load', () => {
-  const sampleList = document.getElementById('sample-list');
-  const selectedOrderList = document.getElementById('selected-order');
-  const playSequenceButton = document.getElementById('play-sequence');
-  let playOrder = []; // Array to store the custom order of audio IDs
+    const sampleList = document.getElementById('sample-list');
+    const selectedOrderList = document.getElementById('selected-order');
+    const playSequenceButton = document.getElementById('play-sequence');
+    let playOrder = []; // Array to store the custom order of audio IDs
 
   // Add sample to the custom order
   sampleList.addEventListener('click', (event) => {
@@ -196,11 +196,72 @@
       // Add the sample to the selected order list
       const listItem = document.createElement('li');
       const filename = event.target.closest('li').querySelector('.audio-button div').textContent;
-      listItem.textContent = filename;
+
+      listItem.innerHTML = `
+        <div class="selected-container">
+          <button class="selected-button" data-audio-id="${audioId}">
+            <i class="fa-solid fa-circle-play"></i>
+            <div>${filename}</div>
+          </button>
+          <button class="remove-from-order" data-audio-id="${audioId}">-</button>
+        </div>
+      `;
       listItem.dataset.audioId = audioId;
       selectedOrderList.appendChild(listItem);
     }
   });
+
+  // Remove sample from the custom order
+  selectedOrderList.addEventListener('click', (event) => {
+    if (event.target.classList.contains('remove-from-order')) {
+      const audioId = event.target.dataset.audioId;
+
+      // Remove the item from the playOrder array
+      playOrder = playOrder.filter((id) => id !== audioId);
+
+      // Remove the item from the selected order list
+      const listItem = event.target.closest('li');
+      listItem.remove();
+    }
+  });
+
+// Play/stop functionality for the selected order
+  selectedOrderList.addEventListener('click', (event) => {
+    const button = event.target.closest('.selected-button');
+    if (!button) return;
+
+    const audioId = button.dataset.audioId;
+    const audioElement = document.getElementById(audioId);
+    const icon = button.querySelector('i');
+
+    if (!audioElement.paused) {
+      // If the audio is playing, stop it and reset the icon
+      audioElement.pause();
+      audioElement.currentTime = 0; // Reset playback to the beginning
+      icon.classList.remove('fa-circle-stop');
+      icon.classList.add('fa-circle-play');
+    } else {
+      // Stop any other playing audio
+      document.querySelectorAll('audio').forEach((audio) => {
+        if (!audio.paused) {
+          audio.pause();
+          audio.currentTime = 0;
+          const otherButton = document.querySelector(`.selected-button[data-audio-id="${audio.id}"]`);
+          if (otherButton) {
+            const otherIcon = otherButton.querySelector('i');
+            otherIcon.classList.remove('fa-circle-stop');
+            otherIcon.classList.add('fa-circle-play');
+          }
+        }
+      });
+
+      // Play the selected audio and change the icon
+      audioElement.play();
+      icon.classList.remove('fa-circle-play');
+      icon.classList.add('fa-circle-stop');
+    }
+  });
+
 
   // Play the samples in the custom order
   playSequenceButton.addEventListener('click', () => {
