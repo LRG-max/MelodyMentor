@@ -16,6 +16,8 @@
 </div>
 
 
+
+
   <div class="composition players">
     <% audio_files = [
       { src: "/audios/Amin_1bar.mp3", id: "snd1" },
@@ -29,16 +31,36 @@
       { src: "/audios/Gmaj7_2bar.mp3", id: "snd9" }
     ] %>
 
-    <% audio_files.each do |audio| %>
-      <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
-      <button class="audio-button" onclick="document.getElementById('<%= audio[:id] %>').play()">
-        <i class="fa-solid fa-circle-play"></i>
-        <div><%= filename %></div>
-      </button>
-      <audio id="<%= audio[:id] %>">
-        <source src="<%= audio[:src] %>" type="audio/mp3">
-      </audio>
-    <% end %>
+    <h3>Ma composition</h3>
+    <ul id="selected-order">
+     <!-- Selected samples will appear here -->
+    </ul>
+    <button id="play-sequence">Jouer ma composition</button>
+
+
+    <h3>Samples</h3>
+    <ul id="sample-list">
+      <% audio_files.each do |audio| %>
+        <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
+        <li>
+          <div class="sample-container">
+            <button class="audio-button" onclick="document.getElementById('<%= audio[:id] %>').play()">
+              <i class="fa-solid fa-circle-play"></i>
+              <div><%= filename %></div>
+            </button>
+            <button class="add-to-order" data-audio-id="<%= audio[:id] %>">+</button>
+          </div>
+          <audio id="<%= audio[:id] %>">
+            <source src="<%= audio[:src] %>" type="audio/mp3">
+          </audio>
+        </li>
+      <% end %>
+</ul>
+
+
+
+
+
   </div>
 
   <script>
@@ -154,6 +176,57 @@
         view.setUint8(offset + i, string.charCodeAt(i));
       }
     }
+
+
+    /* AUDIO TIMELINE */
+   document.addEventListener('turbo:load', () => {
+  const sampleList = document.getElementById('sample-list');
+  const selectedOrderList = document.getElementById('selected-order');
+  const playSequenceButton = document.getElementById('play-sequence');
+  let playOrder = []; // Array to store the custom order of audio IDs
+
+  // Add sample to the custom order
+  sampleList.addEventListener('click', (event) => {
+    if (event.target.classList.contains('add-to-order')) {
+      const audioId = event.target.dataset.audioId;
+
+      // Add the sample to the play order
+      playOrder.push(audioId);
+
+      // Add the sample to the selected order list
+      const listItem = document.createElement('li');
+      const filename = event.target.closest('li').querySelector('.audio-button div').textContent;
+      listItem.textContent = filename;
+      listItem.dataset.audioId = audioId;
+      selectedOrderList.appendChild(listItem);
+    }
+  });
+
+  // Play the samples in the custom order
+  playSequenceButton.addEventListener('click', () => {
+    if (playOrder.length === 0) {
+      alert('Please add samples to the order!');
+      return;
+    }
+
+    let currentIndex = 0;
+
+    const playNext = () => {
+      if (currentIndex >= playOrder.length) return; // Stop if all samples are played
+
+      const audioId = playOrder[currentIndex];
+      const audioElement = document.getElementById(audioId);
+
+      audioElement.play();
+      audioElement.onended = () => {
+        currentIndex++;
+        playNext(); // Play the next sample when the current one ends
+      };
+    };
+
+    playNext(); // Start playing the first sample
+  });
+});
   </script>
 
   <h6><%= link_to "Retour", compositions_path %></h6>
