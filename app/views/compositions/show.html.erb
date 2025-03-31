@@ -44,19 +44,18 @@
         <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
         <li>
           <div class="sample-container">
-            <button class="audio-button" onclick="document.getElementById('<%= audio[:id] %>').play()">
+            <button class="audio-button" data-audio-id="<%= audio[:id] %>">
               <i class="fa-solid fa-circle-play"></i>
               <div><%= filename %></div>
             </button>
             <button class="add-to-order" data-audio-id="<%= audio[:id] %>">+</button>
+            <audio id="<%= audio[:id] %>">
+              <source src="<%= audio[:src] %>" type="audio/mp3">
+            </audio>
           </div>
-          <audio id="<%= audio[:id] %>">
-            <source src="<%= audio[:src] %>" type="audio/mp3">
-          </audio>
         </li>
       <% end %>
-</ul>
-
+    </ul>
 
 
 
@@ -64,6 +63,7 @@
   </div>
 
   <script>
+       /* RECORDING */
     document.addEventListener('turbo:load', () => {
       const recButton = document.getElementById('record');
       const stopButton = document.getElementById('stop');
@@ -225,6 +225,46 @@
     };
 
     playNext(); // Start playing the first sample
+  });
+
+  // Toggle play/stop icon and audio playback
+  sampleList.addEventListener('click', (event) => {
+    const button = event.target.closest('.audio-button');
+    if (!button) return;
+
+    const audioId = button.dataset.audioId;
+    const audioElement = document.getElementById(audioId);
+    const icon = button.querySelector('i');
+
+    if (!audioElement.paused) {
+      // If the audio is playing, stop it and reset the icon
+      audioElement.pause();
+      audioElement.currentTime = 0; // Reset playback to the beginning
+      icon.classList.remove('fa-circle-stop');
+      icon.classList.add('fa-circle-play');
+
+    } else {
+      // Stop any other playing audio
+      document.querySelectorAll('audio').forEach((audio) => {
+        if (!audio.paused) {
+          audio.pause();
+          audio.currentTime = 0;
+          const otherButton = document.querySelector(`.audio-button[data-audio-id="${audio.id}"]`);
+          if (otherButton) {
+            const otherIcon = otherButton.querySelector('i');
+            otherIcon.classList.remove('fa-circle-stop');
+            otherIcon.classList.add('fa-circle-play');
+
+          }
+        }
+      });
+
+      // Play the selected audio and change the icon
+      audioElement.play();
+      icon.classList.remove('fa-circle-play');
+      icon.classList.add('fa-circle-stop');
+
+    }
   });
 });
   </script>

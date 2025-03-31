@@ -52,13 +52,16 @@
 
 button.audio-button {
   background: none;
-  border: none;
+  border: #82e2f3 solid 2px;
+  border-radius: 20px;
+  width: 160px;
+  height: 150px;
   text-align: center;
   cursor: pointer;
 }
 
 button.audio-button i { /* icons */
-  font-size: 4rem;
+  font-size: 5rem;
   color: #82e2f3;
 }
 
@@ -67,10 +70,13 @@ button.audio-button div { /* Filename */
   font-style: italic;
   color: white;
   margin-top: 10px; /* Spacing between icon and text */
+  text-align: center; /* Spacing between icon and text */
 }
 
 
-/* BOUTONS SAMPLES AUDIO */
+
+
+/* COMPO */
 
 #selected-order {
   display: flex !important; /* Force flexbox layout */
@@ -94,10 +100,10 @@ button.audio-button div { /* Filename */
 #sample-list {
   display: flex; /* Arrange items in a row */
   flex-wrap: wrap; /* Allow wrapping if items exceed the container width */
-  gap: 20px; /* Add spacing between items */
+  gap: 120px; /* Add spacing between items */
   list-style: none; /* Remove bullet points */
   padding: 0; /* Remove default padding */
-  margin: 10px 0; /* Add some margin for spacing */
+  margin: 60px 60px; /* Add some margin for spacing */
 }
 
 #sample-list li {
@@ -119,39 +125,22 @@ button.audio-button div { /* Filename */
   height: 120px; /* Set a fixed height for the container */
 }
 
-.audio-button {
-  background: none;
-  border: none;
-  text-align: center;
-  cursor: pointer;
-}
 
-.audio-button i { /* Play icon */
-  font-size: 4rem; /* Make the icon large */
-  color: #82e2f3; /* Blue color */
-}
-
-.audio-button div { /* Filename */
-  font-size: 14px;
-  font-style: italic;
-  color: white;
-  margin-top: 10px; /* Spacing between icon and text */
-  text-align: center;
-}
 
 .add-to-order {
   position: absolute; /* Position the button in the top-right corner */
-  top: 2px;
-  right: 2px;
+  top: -56px;
+  right: -66px;
   background-color: white;
   color: #82e2f3;
   border: none;
   padding: 0; /* Remove extra padding */
   cursor: pointer;
   border-radius: 50%; /* Make the button circular */
-  font-size: 24px;
-  width: 25px; /* Equal width and height for a circular shape */
-  height: 25px; /* Equal width and height for a circular shape */
+  font-size: 40px;
+  font-style: bolder;
+  width: 35px; /* Equal width and height for a circular shape */
+  height: 35px; /* Equal width and height for a circular shape */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,6 +148,7 @@ button.audio-button div { /* Filename */
 
 .add-to-order:hover {
   background-color: #60bcd1;
+  color: white;
 }
 
 
