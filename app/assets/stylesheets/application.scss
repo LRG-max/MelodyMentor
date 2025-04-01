@@ -14,3 +14,16 @@
 @import 'pages/newregistration';
 @import 'pages/index';
 @import 'components/menu';
+
+.d-flex {
+  padding-left: 100px;
+  padding-right: 0px;
+  transition: all 0.3s ease-in-out;
+}
+
+@media (min-width: 1024px) {
+  .d-flex {
+    padding-left: 50px;
+    padding-right: 20px;
+  }
+}
