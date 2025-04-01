@@ -6,64 +6,10 @@
   font-family: Tektur, Helvetica, sans-serif;
 }
 
-.composition h1 {
-  font-size: 3rem;
-  margin: 50px auto 20px auto;
-  width: fit-content;
-  margin-bottom: 50px;
-  margin-left: 330px;
-}
-
-.composition h2 {
-  font-size: 2.5rem;
-  margin-top: 40px;
-}
-
-.composition h3 {
-  font-size: 2rem;
-  margin-top: 30px;
-}
-
-.composition h4, h5 {
-  font-size: 1.5rem;
-  margin-top: 20px;
-}
-
-.composition h6 {
-  text-align: center;
-  margin-top: 50px;
-  font-size: 1.2rem;
-  font-family: Tektur, Helvetica, sans-serif;
-  font-weight: bold;
-}
-
-.return-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  text-decoration: none;
-  color: var(--color);
-  transition: 0.25s;
-  border-radius: 50px;
-  border: 2px solid var(--color);
-  background: none;
-  font-family: Tektur, Helvetica, sans-serif;
-  line-height: 1;
-  padding: 0.8em 1.5em;
-  font-size: 1rem;
-  box-shadow: inset 0 0 0 0 var(--hover);
-
-  &:hover,
-  &:focus {
-    box-shadow: inset 0 0 0 2em var(--hover);
-    color: #82e2f3;
-  }
-}
-
 .composition {
 
   color: white;
-  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  // margin-top: 60px;
 
   ul{
     list-style-type: none;
@@ -72,6 +18,13 @@
     text-decoration: none;
     color: white;
   }
+  h1{
+    font-size: 65px;
+    margin-top: 50px;;
+  }
+  h3{
+    text-align: left;
+  }
   h6 {
     font-family: Tektur, Helvetica, sans-serif;
     text-decoration: none;
@@ -79,97 +32,244 @@
   }
 }
 
-.composition.players {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-    justify-content: center;
-    margin-top: 40px;
-    max-width: 500px;
-    margin-left: 200px;
-  }
-
-.content-wrapper {
-  margin-left: 90px;
-  padding: 20px;
-  transition: margin-left 0.3s ease-in-out;
-}
-
 #records {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 15px 20px;
-  border: 2px solid #82e2f3;
-  border-radius: 50px;
+  flex-direction: row; /* Arrange elements in a row */
+  align-items: center; /* Align elements vertically on the same line */
+  justify-content: center; /* Center elements horizontally within the container */
+  gap: 10px; /* Add spacing between elements */
+  height: auto; /* Adjust height as needed */
+  border: #82e2f3 solid 2px; /* Add a border around the container */
+  border-radius: 50px; /* Add rounded corners to the container */
   width: fit-content;
-  background: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 4px 10px rgba(130, 226, 243, 0.3);
-
-  button, a, audio {
-    font-family: Tektur, Helvetica, sans-serif;
-    font-size: 18px;
-    color: white;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-
-  button:hover, a:hover {
-    color: #82e2f3;
-  }
-
-  audio {
-    width: 250px;
-  }
+  margin: 0px auto; /* Center the container horizontally */
+  margin-top: 50px;
 }
+
+#records button {
+  color: white;
+  background: none;
+  border: none;
+  font-family: Tektur, Helvetica, sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 
 /* BOUTONS SAMPLES AUDIO */
 
 button.audio-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  background: rgba(130, 226, 243, 0.2);
-  border: 2px solid #82e2f3;
-  border-radius: 10px;
-  padding: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: rgba(130, 226, 243, 0.1);
+  border: #82e2f3 solid 2px;
+  border-radius: 20px;
   width: 120px;
+  height: 110px;
+  text-align: center;
+  cursor: pointer;
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack icon and text vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
 }
 
-button.audio-button:active {
-  transform: scale(0.95);
+button.audio-button i { /* icons */
+  font-size: 3rem;
+  color: #82e2f3;
+}
+
+button.audio-button div { /* Filename */
+  font-size: 13px;
+  font-style: italic;
+  // color: white;
+  margin-top: 10px; /* Spacing between icon and text */
+  text-align: center; /* Spacing between icon and text */
 }
 
 button.audio-button:hover {
-  background: #82e2f3;
-  color: black;
-  transform: scale(1.05);
+  border-color: #82e2f3; /* Keep the border color consistent */
+  outline: none; /* Remove any default outline */
 }
 
-button.audio-button i {
+button.audio-button:focus,
+button.audio-button:active {
+  border-color: #82e2f3; /* Keep the border color consistent */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: none; /* Remove any default box shadow */
+}
+
+
+/* MA COMPOSITION */
+
+#selected-order {
+  min-height: 160px; /* Set a minimum height */
+  display: flex; /* Arrange items in a row */
+  flex-wrap: wrap; /* Allow wrapping if items exceed the container width */
+  gap: 10px; /* Add spacing between items */
+  list-style: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+  padding-left: 10px;
+  margin: 30px 0 0px 0; /* Add some margin for spacing */
+  border: #82e2f3 solid 4px;
+  border-radius: 20px;
+}
+
+#selected-order li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+#selected-order li.placeholder {
+  color: #82e2f3;
+  font-style: italic;
+  font-size: 30px;
+  text-align: left;
+  padding-left: 80px;
+}
+
+.selected-container {
+  position: relative; /* Position relative to allow absolute positioning of the "Remove" button */
+  display: flex;
+  flex-direction: column; /* Stack the icon and filename vertically */
+  align-items: center;
+  justify-content: center;
+  width: 100px; /* Set a fixed width for the container */
+  height: 120px; /* Set a fixed height for the container */
+  margin: 25px;
+}
+
+button.selected-button {
+  background: rgba(130, 226, 243, 0.1);
+  border: #82e2f3 solid 2px;
+  border-radius: 20px;
+  width: 120px;
+  height: 110px;
+  text-align: center;
+  cursor: pointer;
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack icon and text vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+}
+
+button.selected-button i { /* icons */
   font-size: 3rem;
   color: #82e2f3;
-  transition: color 0.3s ease;
 }
 
-button.audio-button:hover i {
-  color: black;
-}
-
-button.audio-button div {
-  font-size: 16px;
-  font-weight: bold;
+button.selected-button div { /* Filename */
+  font-size: 13px;
+  font-style: italic;
   color: white;
-  text-transform: uppercase;
-  margin-top: 8px;
+  margin-top: 10px; /* Spacing between icon and text */
+  text-align: center;
+}
+button.selected-button:hover {
+  border-color: #82e2f3; /* Keep the border color consistent */
+}
+button.selected-button:focus,
+button.selected-button:active {
+  border-color: #82e2f3; /* Keep the border color consistent */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: none; /* Remove any default box shadow */
+}
+
+
+.remove-from-order {
+  position: absolute; /* Position the button in the top-right corner */
+  top: -36px;
+  right: -50px;
+  background-color: white;
+  color: #82e2f3;
+  border: none;
+  padding: 0; /* Remove extra padding */
+  cursor: pointer;
+  border-radius: 50%; /* Make the button circular */
+  font-size: 45px;
+  font-style: bolder;
+  width: 35px; /* Equal width and height for a circular shape */
+  height: 35px; /* Equal width and height for a circular shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.remove-from-order:hover {
+  background-color: #60bcd1;
+}
+
+
+
+/* ACCORDS A AJOUTER */
+
+
+.accords {
+  margin-top: 40px;;
+}
+
+#sample-list {
+  display: flex; /* Arrange items in a row */
+  flex-wrap: wrap; /* Allow wrapping if items exceed the container width */
+  gap: 60px; /* Add spacing between items */
+  list-style: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+  margin: 40px 0 0px 10px; /* Add some margin for spacing */
+}
+
+#sample-list li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.sample-container {
+  position: relative; /* Position relative to allow absolute positioning of the "Add" button */
+  display: flex;
+  flex-direction: column; /* Stack the icon and filename vertically */
+  align-items: center;
+  justify-content: center;
+  width: 100px; /* Set a fixed width for the container */
+  height: 120px; /* Set a fixed height for the container */
+}
+
+
+
+.add-to-order {
+  position: absolute; /* Position the button in the top-right corner */
+  top: -36px;
+  right: -50px;
+  background-color: white;
+  color: #82e2f3;
+  border: none;
+  padding: 0; /* Remove extra padding */
+  cursor: pointer;
+  border-radius: 50%; /* Make the button circular */
+  font-size: 35px;
+  font-style: bolder;
+  width: 35px; /* Equal width and height for a circular shape */
+  height: 35px; /* Equal width and height for a circular shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-to-order:hover {
+  background-color: #60bcd1;
+  color: white;
+}
+
+
+#play-sequence {
+  margin-top: 20px;
+  color: white;
+  border: #82e2f3 solid 1px;
+  border-radius: 50px;
+  padding: 10px 20px;
+  cursor: pointer;
 }
