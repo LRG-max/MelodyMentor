@@ -9,6 +9,7 @@
 .composition {
 
   color: white;
+  // margin-top: 60px;
 
   ul{
     list-style-type: none;
@@ -16,6 +17,13 @@
   a {
     text-decoration: none;
     color: white;
+  }
+  h1{
+    font-size: 65px;
+    margin-top: 50px;;
+  }
+  h3{
+    text-align: left;
   }
   h6 {
     font-family: Tektur, Helvetica, sans-serif;
@@ -51,40 +59,56 @@
 /* BOUTONS SAMPLES AUDIO */
 
 button.audio-button {
-  background: none;
+  background: rgba(130, 226, 243, 0.1);
   border: #82e2f3 solid 2px;
   border-radius: 20px;
-  width: 150px;
-  height: 140px;
+  width: 120px;
+  height: 110px;
   text-align: center;
   cursor: pointer;
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack icon and text vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
 }
 
 button.audio-button i { /* icons */
-  font-size: 4rem;
+  font-size: 3rem;
   color: #82e2f3;
 }
 
 button.audio-button div { /* Filename */
-  font-size: 12px;
+  font-size: 13px;
   font-style: italic;
-  color: white;
+  // color: white;
   margin-top: 10px; /* Spacing between icon and text */
   text-align: center; /* Spacing between icon and text */
 }
 
+button.audio-button:hover {
+  border-color: #82e2f3; /* Keep the border color consistent */
+  outline: none; /* Remove any default outline */
+}
 
+button.audio-button:focus,
+button.audio-button:active {
+  border-color: #82e2f3; /* Keep the border color consistent */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: none; /* Remove any default box shadow */
+}
 
 
 /* MA COMPOSITION */
 
 #selected-order {
+  min-height: 160px; /* Set a minimum height */
   display: flex; /* Arrange items in a row */
   flex-wrap: wrap; /* Allow wrapping if items exceed the container width */
-  gap: 100px; /* Add spacing between items */
+  gap: 10px; /* Add spacing between items */
   list-style: none; /* Remove bullet points */
   padding: 0; /* Remove default padding */
-  margin: 70px 0 0px 0; /* Add some margin for spacing */
+  padding-left: 10px;
+  margin: 30px 0 0px 0; /* Add some margin for spacing */
   border: #82e2f3 solid 4px;
   border-radius: 20px;
 }
@@ -98,6 +122,14 @@ button.audio-button div { /* Filename */
   background-color: transparent;
 }
 
+#selected-order li.placeholder {
+  color: #82e2f3;
+  font-style: italic;
+  font-size: 30px;
+  text-align: left;
+  padding-left: 80px;
+}
+
 .selected-container {
   position: relative; /* Position relative to allow absolute positioning of the "Remove" button */
   display: flex;
@@ -107,43 +139,56 @@ button.audio-button div { /* Filename */
   width: 100px; /* Set a fixed width for the container */
   height: 120px; /* Set a fixed height for the container */
   margin: 25px;
-
 }
 
 button.selected-button {
-  background: none;
+  background: rgba(130, 226, 243, 0.1);
   border: #82e2f3 solid 2px;
   border-radius: 20px;
-  width: 150px;
-  height: 140px;
+  width: 120px;
+  height: 110px;
   text-align: center;
   cursor: pointer;
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack icon and text vertically */
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
 }
 
 button.selected-button i { /* icons */
-  font-size: 4rem;
+  font-size: 3rem;
   color: #82e2f3;
 }
 
 button.selected-button div { /* Filename */
-  font-size: 12px;
+  font-size: 13px;
   font-style: italic;
   color: white;
   margin-top: 10px; /* Spacing between icon and text */
   text-align: center;
 }
+button.selected-button:hover {
+  border-color: #82e2f3; /* Keep the border color consistent */
+}
+button.selected-button:focus,
+button.selected-button:active {
+  border-color: #82e2f3; /* Keep the border color consistent */
+  outline: none; /* Remove the default focus outline */
+  box-shadow: none; /* Remove any default box shadow */
+}
+
 
 .remove-from-order {
   position: absolute; /* Position the button in the top-right corner */
-  top: -46px;
-  right: -60px;
+  top: -36px;
+  right: -50px;
   background-color: white;
   color: #82e2f3;
   border: none;
   padding: 0; /* Remove extra padding */
   cursor: pointer;
   border-radius: 50%; /* Make the button circular */
-  font-size: 40px;
+  font-size: 45px;
   font-style: bolder;
   width: 35px; /* Equal width and height for a circular shape */
   height: 35px; /* Equal width and height for a circular shape */
@@ -160,13 +205,18 @@ button.selected-button div { /* Filename */
 
 /* ACCORDS A AJOUTER */
 
+
+.accords {
+  margin-top: 40px;;
+}
+
 #sample-list {
   display: flex; /* Arrange items in a row */
   flex-wrap: wrap; /* Allow wrapping if items exceed the container width */
-  gap: 100px; /* Add spacing between items */
+  gap: 60px; /* Add spacing between items */
   list-style: none; /* Remove bullet points */
   padding: 0; /* Remove default padding */
-  margin: 70px 0 0px 0; /* Add some margin for spacing */
+  margin: 40px 0 0px 10px; /* Add some margin for spacing */
 }
 
 #sample-list li {
@@ -192,15 +242,15 @@ button.selected-button div { /* Filename */
 
 .add-to-order {
   position: absolute; /* Position the button in the top-right corner */
-  top: -46px;
-  right: -60px;
+  top: -36px;
+  right: -50px;
   background-color: white;
   color: #82e2f3;
   border: none;
   padding: 0; /* Remove extra padding */
   cursor: pointer;
   border-radius: 50%; /* Make the button circular */
-  font-size: 40px;
+  font-size: 35px;
   font-style: bolder;
   width: 35px; /* Equal width and height for a circular shape */
   height: 35px; /* Equal width and height for a circular shape */
