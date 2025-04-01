@@ -1,0 +1,51 @@
+fr:
+  simple_form:
+    "yes": 'Oui'
+    "no": 'Non'
+    required:
+      text: 'obligatoire'
+      mark: '*'
+      # html: '<abbr title="obligatoire">*</abbr>'
+    error_notification:
+      default_message: "Veuillez corriger les erreurs ci-dessous :"
+
+    labels:
+      defaults:
+        email: "Adresse e-mail"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
+        remember_me: "Se souvenir de moi"
+      user:
+        email: "Adresse e-mail"
+        password: "Mot de passe"
+        password_confirmation: "Confirmation du mot de passe"
+        remember_me: "Se souvenir de moi"
+
+    buttons:
+      submit:
+        session:
+          create: "Se connecter"
+        registration:
+          create: "Créer un compte"
+        password:
+          update: "Mettre à jour le mot de passe"
+        unlock:
+          create: "Déverrouiller mon compte"
+        confirmation:
+          create: "Renvoyer les instructions"
+        user:
+          update: "Mettre à jour"
+
+    hints:
+      user:
+        email: "Entrez votre adresse e-mail."
+        password: "Utilisez au moins 6 caractères."
+        remember_me: "Cochez si vous utilisez un appareil privé."
+
+    include_blanks:
+      defaults:
+        age: "Je préfère ne pas dire"
+
+    prompts:
+      defaults:
+        age: "Sélectionnez votre âge"

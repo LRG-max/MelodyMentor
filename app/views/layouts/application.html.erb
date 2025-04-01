@@ -10,9 +10,19 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+ <body>
   <%= render "shared/menu" %>
 
-    <%= yield %>
-  </body>
+  <% if content_for?(:standalone_layout) %>
+    <main class="p-4" style="margin-left: 4px;">
+      <%= yield :standalone_layout %>
+    </main>
+  <% else %>
+    <main class="container-fluid p-4" style="margin-left: 115px;">
+      <div class="d-flex justify-content-center align-items-center min-vh-100">
+        <%= yield %>
+      </div>
+    </main>
+  <% end %>
+</body>
 </html>
