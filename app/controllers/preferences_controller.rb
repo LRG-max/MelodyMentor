@@ -5,12 +5,14 @@ class PreferencesController < ApplicationController
   end
 
   def create
+    # Création d'une instance de préférences avec ce que nous envoie les users
     @preference = Preference.new(preference_params)
-    @preference.user_id = current_user.id
-    survey = Survey.all.first
-    @preference.survey = survey
+    # Assignation des infos connues
+    @preference.user = current_user
+    @preference.survey = Survey.first
+    # Sauvegarde en base de données
     @preference.save!
-    @questions = survey.questions
+
   end
 
   private
