@@ -61,6 +61,13 @@
       }
     }
   }
+  input.checkbox-remember {
+    width: 18px;
+    height: 18px;
+    accent-color: #82e2f3;
+    margin-right: 8px;
+    cursor: pointer;
+  }
 }
 
 .composer-select-container {
@@ -107,5 +114,30 @@
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
+  }
+}
+
+.btn-submit-o {
+  display: inline-block;
+  font-size: 0.9rem;
+  font-family: Tektur, Helvetica, sans-serif;
+  color: #82e2f3;
+  background: none;
+  border: none;
+  padding: 6px 10px;
+  margin: 5px auto;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+
+  &:hover,
+  &:focus {
+    color: #ffffff;
+    text-decoration: underline;
+    outline: none;
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 }
