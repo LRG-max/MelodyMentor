@@ -11,6 +11,20 @@
   align-items: center;
   padding: 20px 0;
   justify-content: space-between;
+  transition: transform 0.3s ease-in-out;
+}
+
+.menu-toggle {
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  z-index: 1000;
 }
 
 .menu-logo {
@@ -63,5 +77,25 @@
 }
 
 body {
-  margin-left: 250px;
+  margin-left: 250px; /* Ajuste pour ne pas chevaucher le menu */
+  transition: margin-left 0.3s ease-in-out;
+}
+
+/* 🌟 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .side-menu {
+    transform: translateX(-100%); /* Cache le menu */
+  }
+
+  .menu-toggle {
+    display: block; /* Affiche le bouton burger */
+  }
+
+  body {
+    margin-left: 0; /* Supprime le décalage sur mobile */
+  }
+
+  .side-menu.open {
+    transform: translateX(0); /* Fait apparaître le menu */
+  }
 }
