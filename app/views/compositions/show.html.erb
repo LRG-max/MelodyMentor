@@ -1,43 +1,70 @@
-<div class="composition-index">
-  <div>
+<%= javascript_include_tag 'compositions_show' %>
 
+<div class="composition" data-composition-id="<%= @composition.id %>">
+  <div>
     <ul>
       <li><h1><%= @composition.title %></h1></li>
-      <li><p>Key signature: <%= @composition.key_signature %></p></li>
-      <li><p>Genre: <%= @composition.style %></p></li>
+      <%# <li><p>Key signature: <%= @composition.key_signature %></p></li>
+      <%# <li><p>Genre: <%= @composition.style %></p></li>
     </ul>
-
   </div>
 
-<%# TO DO AUDIO %>
-<div class="composition-index players">
 
-  <button onclick="snd1.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd2.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd3.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd4.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd5.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd6.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd7.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd8.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-  <button onclick="snd9.play()"> <i class="fa-solid fa-circle-play fa-2xl" style="color: #82e2f3;"></i> </button>
-
+<div id="records">
+  <button id="record" ><i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer</button>
+  <button id="stop" ><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
+  <audio controls ></audio>
+  <a id="download" href="" download><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
 </div>
-<script>
-    const snd1 = new Audio("/audios/60bpm_Amin_PIANO_1barEnd.mp3");
-    const snd2 = new Audio("/audios/60bpm_Amin7_PIANO_2bar.mp3");
-    const snd3 = new Audio("/audios/60bpm_Bmin7_PIANO_1barEnd.mp3");
-    const snd4 = new Audio("/audios/60bpm_Bmin7_PIANO_2bar.mp3");
-    const snd5 = new Audio("/audios/60bpm_Bmin9_PIANO_2bar.mp3");
-    const snd6 = new Audio("/audios/60bpm_Cmaj7_PIANO_2bar.mp3");
-    const snd7 = new Audio("/audios/60bpm_Gadd2_PIANO_1barEnd.mp3");
-    const snd8 = new Audio("/audios/60bpm_Gmaj7_PIANO_1barEnd.mp3");
-    const snd9 = new Audio("/audios/60bpm_Gmaj7_PIANO_2bar.mp3");
-</script>
 
+
+
+
+  <div class="composition players">
+    <% audio_files = [
+      { src: "/audios/Do-Lam/Do7.mp3", id: "snd1" },
+      { src: "/audios/Do-Lam/Fa.mp3", id: "snd2" },
+      { src: "/audios/Do-Lam/Lam7.mp3", id: "snd3" },
+      { src: "/audios/Do-Lam/Mi m.mp3", id: "snd4" },
+      { src: "/audios/Do-Lam/Ré m.mp3", id: "snd5" },
+      { src: "/audios/Do-Lam/Sim5-.mp3", id: "snd6" },
+      { src: "/audios/Do-Lam/Sol.mp3", id: "snd7" }
+    ] %>
+
+    <div class="ma-compo">
+      <h3>Ma composition</h3>
+      <ul id="selected-order">
+        <!-- This will be dynamically populated by JavaScript -->
+      </ul>
+      <button class="button pulse" id="play-sequence" >Jouer ma composition</button>
+    </div>
+
+    <div class="accords">
+      <h3>Accords à ajouter</h3>
+      <ul id="sample-list">
+        <% audio_files.each do |audio| %>
+          <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
+          <li>
+            <div class="sample-container">
+              <button class="audio-button" data-audio-id="<%= audio[:id] %>">
+                <i class="fa-solid fa-circle-play"></i>
+                <div><%= filename %></div>
+              </button>
+              <button class="add-to-order" data-audio-id="<%= audio[:id] %>">+</button>
+              <audio id="<%= audio[:id] %>">
+                <source src="<%= audio[:src] %>" type="audio/mp3">
+              </audio>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+
+
+  </div>
 
 
 
   <h6><%= link_to "Retour", compositions_path %></h6>
-
 </div>

@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
 
-  resources :compositions, only: [:create, :index, :new, :show]
+  resources :compositions, only: [:create, :index, :destroy, :new, :show]
+
+  resources :challenges, only: [:index, :show]
+  get "/random_challenge", to: "challenges#random", as: :random_challenge
 
   resources :preferences, only: [:new, :index, :create]
 

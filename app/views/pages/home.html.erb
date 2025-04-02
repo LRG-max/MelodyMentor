@@ -1,34 +1,34 @@
-<main class="container">
-  <!-- Hero Section -->
-  <section class="hero">
-    <h1>Composez votre musique en toute simplicité</h1>
-    <p>Aucune connaissance en théorie musicale requise. Laissez-vous guider.</p>
-    <%= link_to new_composition_path, class: "button pulse" do %>
-      Commencer maintenant
-    <% end %>
-  </section>
+<div class="wrapper">
+  <main class="container">
+    <!-- 🎵 HERO SECTION -->
+    <section class="hero" id="hero-section">
+      <h1>Composez votre musique en toute simplicité</h1>
+      <p>Aucune connaissance en théorie musicale requise. Laissez-vous guider.</p>
+      <%= link_to new_composition_path, class: "button pulse", id: "button-start", aria_label: "Commencer à composer" do %>
+        Commencer maintenant
+      <% end %>
+    </section>
 
-  <!-- Fonctionnalités -->
-  <section class="features">
-    <div class="feature">
-      <h3>Personnalisation intuitive</h3>
-      <p>Choisissez un style musical et laissez-vous guider.</p>
-    </div>
-    <div class="feature">
-      <h3>Suggestions dynamiques</h3>
-      <p>Découvrez des progressions d'accords adaptées à vos goûts.</p>
-    </div>
-    <div class="feature">
-      <h3>Création simple et guidée</h3>
-      <p>Composez et écoutez en temps réel.</p>
-    </div>
-  </section>
+    <!-- 🚀 FEATURES -->
+    <section class="features" id="features-section">
+      <div class="feature" id="feature-1">
+        <h3>Personnalisation intuitive</h3>
+        <p>Choisissez un style musical et laissez-vous guider.</p>
+      </div>
+      <div class="feature" id="feature-2">
+        <h3>Suggestions dynamiques</h3>
+        <p>Découvrez des progressions d'accords adaptées à vos goûts.</p>
+      </div>
+      <div class="feature" id="feature-3">
+        <h3>Création simple et guidée</h3>
+        <p>Composez et écoutez en temps réel.</p>
+      </div>
+    </section>
 
-  <!-- Call to Action -->
-  <section class="cta">
-    <h2>Prêt à composer votre première mélodie ?</h2>
-    <p></p>
-    <%= link_to  "Créer ma première mélodie", new_composition_path, :class=>"button pulse" %>
-    <%# <button class="button pulse">Créer ma première mélodie</button> %>
-  </section>
-</main>
+    <!-- 🎶 CALL TO ACTION -->
+    <section class="cta" id="cta-section">
+      <h2>Prêt à composer votre première mélodie ?</h2>
+      <%= link_to "Créer ma première mélodie", new_composition_path, class: "button pulse", id: "button-action", aria_label: "Créer une mélodie" %>
+    </section>
+  </main>
+</div>

@@ -1,15 +1,42 @@
 <div class="container">
   <div class="composition-index">
-    <h1>Mes Compositions</h1>
+    <h1 id="compositions-title">🎼 Mes Compositions</h1>
 
-    <ul>
+    <ul class="composition-list">
       <% @compositions.each do |composition| %>
-        <li><%= link_to composition.title, composition_path(composition) %></li>
+        <li class="composition-item">
+          <!-- Partie contenant le titre, les informations de la composition -->
+          <div class="composition-info">
+            <h2><%= link_to composition.title, composition_path(composition), data: { turbo: false }  %></h2>
+            <p class="composition-meta">⏳ Durée : <%= composition.formatted_duration %></p>
+            <p class="composition-meta">📅 Créée le : <%= composition.created_at.strftime("%d/%m/%Y") %></p>
+          </div>
 
+          <!-- Partie audio -->
+          <% if composition.audio_url.present? %>
+            <audio controls class="composition-audio">
+              <source src="<%= composition.audio_url %>" type="audio/mpeg">
+              Ton navigateur ne supporte pas l’audio.
+            </audio>
+          <% else %>
+            <p class="no-audio">🚫 Pas de fichier audio disponible.</p>
+          <% end %>
 
+          <!-- Menu déroulant avec trois points -->
+          <div class="dropdown">
+            <button class="dropdown-btn">⋮</button> <!-- Trois points -->
+            <div class="dropdown-content">
+              <%= link_to 'Éditer', composition_path(composition), class: 'dropdown-item' %>
+              <%= link_to 'Télécharger', composition.audio_url, class: 'dropdown-item', download: composition.title %>
+              <%= form_with model: composition, method: :delete, local: true,
+                           data: { turbo: false, confirm: "Es-tu sûr de vouloir supprimer cette composition ?" } do %>
+                <button type="submit" class="dropdown-item">Supprimer</button>
+              <% end %>
+            </div>
+          </div>
+
+        </li>
       <% end %>
     </ul>
-
   </div>
-
 </div>

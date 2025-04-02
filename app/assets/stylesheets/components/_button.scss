@@ -31,6 +31,7 @@ box-shadow: 0 0 0 2em transparent;
 
 $colors: (
 pulse: #82e2f3,
+danger: #ff4d4d
 );
 
 
@@ -50,7 +51,7 @@ button {
   background: none;
   font-family: Tektur, Helvetica, sans-serif;
   line-height: 1;
-  margin: 0.5em;
+  margin: 0.7em;
   padding: 1em 2em;
   &:hover,
   &:focus {
@@ -67,7 +68,6 @@ a {
   background: none;
   font-family: Tektur, Helvetica, sans-serif;
   line-height: 1;
-  margin: 0.5em;
   padding: 1em 2em;
   &:hover,
   &:focus {

@@ -1,25 +1,92 @@
-<h2>Sign up</h2>
+<div class="signup-container">
+  <h2>🎵 Quel compositeur deviendras-tu ?</h2>
+  <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "signup-form" }) do |f| %>
+    <%= f.error_notification %>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= f.error_notification %>
+    <!-- Champs du formulaire -->
+    <div class="form-inputs">
+      <%= f.input :email, required: true, autofocus: true, input_html: { autocomplete: "email", class: "input-field" } %>
+      <%= f.input :password, required: true, hint: ("#{@minimum_password_length} caractères minimum" if @minimum_password_length), input_html: { autocomplete: "new-password", class: "input-field" } %>
+      <%= f.input :password_confirmation, required: true, input_html: { autocomplete: "new-password", class: "input-field" } %>
+    </div>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                input_html: { autocomplete: "email" }%>
-    <%= f.input :password,
-                required: true,
-                hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
-                input_html: { autocomplete: "new-password" } %>
-    <%= f.input :password_confirmation,
-                required: true,
-                input_html: { autocomplete: "new-password" } %>
-  </div>
+    <div class="composer-select-container">
+      <label for="composer-select">Choisissez votre compositeur favori :</label>
+      <select id="composer-select" name="composer" class="input-field">
+        <option value="">Sélectionner un compositeur</option>
+      </select>
+      <p id="composer-name" class="composer-name"></p>
+      <img id="composer-image" src="" alt="Compositeur" class="composer-img">
+    </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Sign up" %>
-  </div>
-<% end %>
+    <!-- Bouton de soumission -->
+    <div class="form-actions">
+      <%= f.button :submit, "S'inscrire", class: "btn-submit" %>
+    </div>
+  <% end %>
+</div>
 
 <%= render "devise/shared/links" %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectElement = document.getElementById("composer-select");
+    const imageElement = document.getElementById("composer-image");
+    const nameElement = document.getElementById("composer-name");
+
+    // Récupérer les compositeurs pop / contemporains
+    fetch("https://musicbrainz.org/ws/2/artist/?query=tag:songwriter&fmt=json&limit=10")
+      .then(response => response.json())
+      .then(data => {
+        data.artists.forEach(composer => {
+          const option = document.createElement("option");
+          option.value = composer.id; // ID MusicBrainz
+          option.textContent = composer.name;
+          selectElement.appendChild(option);
+        });
+      });
+
+    // Lorsqu'un compositeur est sélectionné
+    selectElement.addEventListener("change", function () {
+      const composerId = this.value;
+      const composerName = this.options[this.selectedIndex].text;
+      nameElement.textContent = composerName;
+
+      // Vérifier si un ID Wikidata est associé au compositeur
+      fetch(`https://musicbrainz.org/ws/2/artist/${composerId}?inc=url-rels&fmt=json`)
+        .then(response => response.json())
+        .then(data => {
+          let wikidataId = null;
+
+          // Chercher l'ID Wikidata dans les relations de l'artiste
+          if (data.relations) {
+            data.relations.forEach(rel => {
+              if (rel.type === "wikidata") {
+                wikidataId = rel.url.resource.split("/").pop(); // Extraire l'ID Wikidata
+              }
+            });
+          }
+
+          if (wikidataId) {
+            // Rechercher une image sur Wikidata
+            fetch(`https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${wikidataId}&format=json&props=claims&origin=*`)
+              .then(response => response.json())
+              .then(data => {
+                const entity = data.entities[wikidataId];
+                if (entity && entity.claims && entity.claims.P18) {
+                  const imageName = entity.claims.P18[0].mainsnak.datavalue.value;
+                  imageElement.src = `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(imageName)}`;
+                  imageElement.style.display = "block";
+                } else {
+                  imageElement.src = "https://via.placeholder.com/150?text=Aucune+image"; // Image par défaut
+                  imageElement.style.display = "block";
+                }
+              });
+          } else {
+            imageElement.src = "https://via.placeholder.com/150?text=Aucune+image"; // Image par défaut si pas d'ID Wikidata
+            imageElement.style.display = "block";
+          }
+        });
+    });
+  });
+</script>
