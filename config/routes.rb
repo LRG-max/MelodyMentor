@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :compositions, only: [:create, :index, :new, :show]
 
-  resources :preferences, only: [:new, :create]
+  resources :preferences, only: [:new, :index, :create]
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

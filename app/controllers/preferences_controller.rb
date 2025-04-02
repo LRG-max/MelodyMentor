@@ -10,8 +10,12 @@ class PreferencesController < ApplicationController
     # Assignation des infos connues
     @preference.user = current_user
     @preference.survey = Survey.first
-    # Sauvegarde en base de données
-    @preference.save!
+    # Sauvegarde en base de données et affichage
+    if @preference.save!
+      redirect_to preferences_path(@preference)
+    else
+      render :new, status: :unprocessable_entity
+    end
 
   end
 
