@@ -7,5 +7,7 @@ Rails.application.routes.draw do
   resources :challenges, only: [:index, :show]
   get "/random_challenge", to: "challenges#random", as: :random_challenge
 
+  resources :preferences, only: [:new, :index, :create]
+
   get "up" => "rails/health#show", as: :rails_health_check
 end

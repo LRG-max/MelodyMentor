@@ -8,6 +8,21 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+# Suppression des anciennes données
+Survey.destroy_all
+Question.destroy_all
+
+# Création d'un sondage
+survey = Survey.create
+
+# Création des questions associées au sondage
+
+Question.create(survey_id: survey.id, question: "Quelle est ton humeur ?")
+Question.create(survey_id: survey.id, question: "Sais-tu situer le DO sur un piano ?")
+
+puts "Données seeds mises à jour avec succès !"
+
+
 puts "Nettoyage des anciens challenges..."
 Challenge.destroy_all
 
@@ -50,3 +65,4 @@ Challenge.create!(challenges_data)
 
 puts "#{Challenge.count} challenges créés."
 puts "#{Challenge.where(active: true).count} challenges actifs."
+
