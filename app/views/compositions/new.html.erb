@@ -8,20 +8,19 @@
     <div class="form-inputs composition-item"">
       <%= f.input :title, label: "Titre de la composition" %>
 
-     <%= f.input :mood,
-            label: "Humeur musicale",
-            as: :select,
-            input_html: { class: "form-control", id: "mood-select" },
-            collection: [["🌞 Joyeux et lumineux", "majeur"],
-              ["🌧️ Mélancolique et introspectif", "mineur"]],
-            prompt: "Choisir une humeur" %>
+      <%= f.input :key_signature,
+                  label: "Note de départ (tonalité)",
+                  as: :select,
+                  input_html: { class: "form-control" },
+                  collection: %w[DO DO# RE RE# MI FA FA# SOL SOL# LA LA# SI],
+                  prompt: "Choisir une note" %>
 
-     <%= f.input :key_signature,
-            label: "Note de départ (tonalité)",
-            as: :select,
-            input_html: { class: "form-control", id: "key-signature-select" },
-            collection: [],
-            prompt: "Choisir une note" %>
+      <%= f.input :mood,
+                  label: "Humeur musicale",
+                  as: :select,
+                  input_html: { class: "form-control" },
+                  collection: [["😄 Heureux (majeur)", "majeur"], ["😔 Triste (mineur)", "mineur"]],
+                  prompt: "Choisir une humeur" %>
 
       <%= f.input :style,
             label: "Instrument principal",
