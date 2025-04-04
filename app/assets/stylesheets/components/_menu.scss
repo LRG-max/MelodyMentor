@@ -1,19 +1,27 @@
 .side-menu {
-  position: fixed;
+  grid-column: 1; /* Place the side menu in the first column */
+  grid-row: 1; /* Place it in the first row */
+  position: fixed; /* Keep it fixed on the left */
   left: 0;
   top: 0;
   height: 100%;
-  width: 250px;
-  background: rgba(20, 35, 42, 0.8);
+  width: 220px; /* Fixed width for the sidebar */
+  background: rgba(64, 128, 139, 0.1);
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px 0;
-  justify-content: space-between;
-  transition: transform 0.3s ease-in-out;
+  padding: 10px 0;
+  justify-content: flex-start; /* Align items to the top initially */
+  z-index: 1000;
 }
 
+.main-content {
+  grid-column: 2; /* Place the main content in the second column */
+  grid-row: 1; /* Place it in the first row */
+  padding: 20px; /* Add some padding for spacing */
+  overflow-y: auto; /* Allow scrolling for the content */
+}
 .menu-toggle {
   display: none;
   position: absolute;
@@ -35,21 +43,42 @@
 .menu-links {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 15px;
   width: 100%;
-  text-align: center;
+  text-align: left;
+  padding-left: 15px;
 }
 
 .menu-link {
-  color: #82e2f3;
+  color:  #82e2f3; /* Default link color */
   text-decoration: none;
+  font-style: italic;
   font-size: 1.2rem;
-  padding: 10px 0;
-  transition: color 0.3s ease-in-out;
+  opacity: 0.7;
+  padding: 10px 0 10px 20px; /* Add left padding to align text and icons */
+  transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  display: flex; /* Use flexbox to align icon and text */
+  align-items: center; /* Vertically center icon and text */
+  gap: 10px; /* Add spacing between icon and text */
+
+  &.active {
+    color: transparent; /* Make the text color transparent */
+    background-image: linear-gradient(#82e2f3, white); /* Apply gradient */
+    background-clip: text; /* Clip the background to the text */
+    -webkit-background-clip: text; /* For WebKit browsers */
+    -webkit-text-fill-color: transparent; /* Ensure the text is filled with the gradient */
+    text-fill-color: transparent; /* For other browsers */
+    border: 1px solid #82e2f3;
+    padding: 10px 20px 10px 20px;
+    font-style:normal;
+    opacity: 1;
+
+  }
 }
 
 .menu-link:hover {
-  color: white;
+  color: white; /* Hover color */
 }
 
 .menu-social {
@@ -57,7 +86,7 @@
   justify-content: center;
   gap: 8px;
   font-size: 1.5rem;
-  margin-top: 10px;
+  margin-top: auto; /* Tout en bas */
 }
 
 .menu-social a {
@@ -71,31 +100,37 @@
 }
 
 .menu-footer {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   text-align: center;
   color: #D7D7D7;
+  font-style: italic;
+  margin-top: 20px;
 }
 
 body {
-  margin-left: 250px; /* Ajuste pour ne pas chevaucher le menu */
-  transition: margin-left 0.3s ease-in-out;
+  display: grid;
+  grid-template-columns: 200px 1fr; /* 200px for the side menu, remaining space for content */
+  grid-template-rows: auto; /* Content flows naturally */
+  height: 100vh; /* Full viewport height */
+  margin: 0; /* Remove default margin */
 }
 
 /* 🌟 RESPONSIVE DESIGN */
 @media (max-width: 768px) {
-  .side-menu {
-    transform: translateX(-100%); /* Cache le menu */
-  }
-
-  .menu-toggle {
-    display: block; /* Affiche le bouton burger */
-  }
-
   body {
-    margin-left: 0; /* Supprime le décalage sur mobile */
+    grid-template-columns: 1fr; /* Only one column for mobile */
+  }
+
+  .side-menu {
+    transform: translateX(-100%); /* Hide the menu */
+    transition: transform 0.3s ease-in-out;
   }
 
   .side-menu.open {
-    transform: translateX(0); /* Fait apparaître le menu */
+    transform: translateX(0); /* Show the menu when open */
+  }
+
+  .main-content {
+    grid-column: 1; /* Main content takes the full width */
   }
 }

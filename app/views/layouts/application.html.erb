@@ -11,18 +11,22 @@
   </head>
 
  <body>
-  <%= render "shared/menu" %>
+  <div class="side-menu">
+    <%= render "shared/menu" %> <!-- menu -->
+  </div>
 
-  <% if content_for?(:standalone_layout) %>
-    <main class="p-4" style="margin-left: 4px;">
-      <%= yield :standalone_layout %>
-    </main>
-  <% else %>
-    <main class="container-fluid">
-      <div class="d-flex">
-        <%= yield %>
-      </div>
-    </main>
-  <% end %>
+  <div class="main-content">
+    <% if content_for?(:standalone_layout) %>
+      <main class="p-4">
+        <%= yield :standalone_layout %>
+      </main>
+    <% else %>
+      <main class="container-fluid">
+        <div class="d-flex">
+          <%= yield %>
+        </div>
+      </main>
+    <% end %>
+  </div>
 </body>
 </html>
