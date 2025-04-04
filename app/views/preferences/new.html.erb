@@ -1,12 +1,30 @@
-<div class="container">
-  <div class="form text-white">
+<%= content_for :standalone_layout do %>
+  <div class="main-wrapper">
+    <div class="preference-new-container">
+      <h2>Des Idées ?</h2>
+        <div class="form-inputs preference-item">
 
-    <%= simple_form_for [@preference] ,url: preferences_path do |f| %>
-        <%= f.input :mood_preference, as: :radio_buttons, collection: ["Gaie", "Triste"], label: @questions.first.question %>
-        <%= f.input :composition_experience, as: :radio_buttons, collection: ["Oui", "Non"], label: @questions.last.question %>
-        <%= f.submit %>
-    <% end %>
+          <%= simple_form_for [@preference] ,url: preferences_path do |f| %>
+            <%= f.input :mood_preference,
+                  as: :select,
+                  input_html: { class: "form-control" },
+                  collection: [["😄 Heureux (majeur)", "majeur"], ["😔 Triste (mineur)", "mineur"]],
+                  label: @questions.first.question %>
 
+            <%= f.input :composition_experience,
+                  as: :select,
+                  input_html: { class: "form-control" },
+                  collection: ["Oui", "Non"],
+             label: @questions.last.question %>
+
+              <div class="form-actions">
+                <%= f.button :submit, "Enregistrer tes préférences", class: "btn-submit" %>
+              </div>
+
+          <% end %>
+
+        </div>
+
+    </div>
   </div>
-
-</div>
+<% end %>
