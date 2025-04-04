@@ -1,4 +1,5 @@
 class PreferencesController < ApplicationController
+
   def new
     @preference = Preference.new
     @questions = Question.all
