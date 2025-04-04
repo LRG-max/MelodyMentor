@@ -1,4 +1,5 @@
 <%= javascript_include_tag 'compositions_show' %>
+<%= javascript_include_tag 'upload_recording' %>
 
 <div class="composition" data-composition-id="<%= @composition.id %>">
   <div>
@@ -15,7 +16,11 @@
   <button id="stop" ><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
   <audio controls ></audio>
   <a id="download" href="" download><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
+  <button id="save-recording" data-url="<%= save_audio_composition_path(@composition) %>">
+      💾 Sauvegarder
+    </button>
 </div>
+
 
 
 

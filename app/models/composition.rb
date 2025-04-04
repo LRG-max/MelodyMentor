@@ -1,9 +1,11 @@
 require 'streamio-ffmpeg'
+require 'open-uri'
 
 class Composition < ApplicationRecord
   belongs_to :user
+  has_one_attached :audio
 
-  before_save :set_duration
+
 
   def formatted_duration
     return "Non spécifiée" unless duration.present?
@@ -13,12 +15,29 @@ class Composition < ApplicationRecord
     format("%02d:%02d", minutes, seconds)
   end
 
+  def regenerate_duration!
+    return unless audio.attached?
+
+    url = Rails.application.routes.url_helpers.rails_blob_url(audio.blob, only_path: false)
+    file = URI.open(url)
+    movie = FFMPEG::Movie.new(file.path)
+    update(duration: movie.duration.to_i)
+  rescue => e
+    Rails.logger.error("Erreur lors de la lecture de la durée : #{e.message}")
+  end
+
   private
 
   def set_duration
-    return unless audio_url.present?
+    return unless audio.attached?
 
-    file = FFMPEG::Movie.new(audio_url)
-    self.duration = file.duration.to_i
+    begin
+      downloaded_file = URI.open(audio.service_url)
+      movie = FFMPEG::Movie.new(downloaded_file.path)
+      self.duration = movie.duration.to_i
+    rescue => e
+      Rails.logger.error("Erreur lors de la lecture audio : #{e.message}")
+    end
   end
+
 end
