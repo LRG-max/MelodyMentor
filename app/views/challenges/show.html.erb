@@ -1,11 +1,15 @@
 
 <div class="composition">
-<h1><%= @challenge.title %></h1>
-<p><%= @challenge.description %></p>
+  <h1><%= @challenge.title %></h1>
+<div class="challenge-info-card">
 
-<span class="difficulty-badge <%= @challenge.difficulty.downcase %>">
+  <p><%= @challenge.description %></p>
+  <span class="difficulty-badge <%= @challenge.difficulty.downcase %>">
   Difficulté : <%= @challenge.difficulty %>
 </span>
+</div>
+
+
 
 <%= render 'shared/audio_composer' %>
 

@@ -1,0 +1,52 @@
+<div class="side-menu">
+  <div class="menu-header">
+    <%= link_to root_path do %>
+      <img src="https://res.cloudinary.com/doxv7g7oq/image/upload/v1742588414/Color%C3%A9_Son_Vagues_Musique_App_Logo-removebg-preview_djm51j.png" alt="Logo MelodyMentor" class="menu-logo">
+    <% end %>
+  </div>
+
+  <nav class="menu-links">
+    <% if user_signed_in? %>
+    <%= link_to root_path, class: "menu-link #{'active' if current_page?(root_path)}" do %>
+      <i class="fas fa-home"></i> Accueil
+    <% end %>
+    <%= link_to new_composition_path, class: "menu-link #{'active' if current_page?(new_composition_path)}" do %>
+      <i class="fa-solid fa-music"></i> Créer
+    <% end %>
+
+    <%= link_to compositions_path, class: "menu-link #{'active' if controller_name == 'compositions' && action_name.in?(%w[index show])}" do %>
+      <i class="fa-solid fa-microphone-lines"></i> Mes Compos
+    <% end %>
+
+    <%= link_to challenges_path, class: "menu-link #{'active' if current_page?(challenges_path)}" do %>
+      <i class="fa-solid fa-trophy"></i> Défis
+    <% end %>
+
+    <%= link_to new_preference_path, class: "menu-link" do %>
+      <i class="fa-solid fa-lightbulb"></i> Des Idées ?
+    <% end %>
+      <%= link_to "#", class: "menu-link dropdown-toggle #{'active' if controller_name == 'users'}", id: "profile-menu", data: { bs_toggle: "dropdown" } do %>
+        <i class="fa-solid fa-user"></i> Mon Profil
+      <% end %>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profile-menu">
+        <li><%= link_to "Mon Profil", "#", class: "dropdown-item" %></li>
+        <li><%= link_to "Déconnexion", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %></li>
+      </ul>
+    <% else %>
+      <%= link_to new_user_session_path, class: "menu-link #{'active' if current_page?(new_user_session_path)}" do %>
+        <i class="fa-solid fa-sign-in"></i> Connexion
+      <% end %>
+      <%= link_to new_user_registration_path, class: "menu-link #{'active' if current_page?(new_user_registration_path)}" do %>
+        <i class="fa-solid fa-user-plus"></i> Inscription
+      <% end %>
+    <% end %>
+  </nav>
+
+  <div class="menu-social">
+    <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+    <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+    <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+  </div>
+
+  <p class="menu-footer">&copy; 2025 MelodyMentor - Tous droits réservés.</p>
+</div>
