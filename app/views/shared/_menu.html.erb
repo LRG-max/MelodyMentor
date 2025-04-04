@@ -22,6 +22,10 @@
       <i class="fa-solid fa-trophy"></i> Défis
     <% end %>
 
+    <%= link_to new_preference_path, class: "menu-link" do %>
+      <i class="fa-solid fa-lightbulb"></i> Des Idées ?
+    <% end %>
+
     <% if user_signed_in? %>
       <%= link_to "#", class: "menu-link dropdown-toggle", id: "profile-menu", data: { bs_toggle: "dropdown" } do %>
         <i class="fa-solid fa-user"></i> Mon Profil
