@@ -31,9 +31,31 @@ class CompositionsController < ApplicationController
     @composition = Composition.find(params[:id])
   end
 
+  def save_audio
+    @composition = Composition.find(params[:id])
+
+    if params[:audio]
+      @composition.audio.attach(params[:audio])
+      @composition.save
+      @composition.regenerate_duration!
+
+      begin
+        file = URI.open(@composition.audio.service_url)
+        movie = FFMPEG::Movie.new(file.path)
+        @composition.update(duration: movie.duration.to_i)
+      rescue => e
+        Rails.logger.error("Erreur FFMPEG : #{e.message}")
+      end
+
+      head :ok
+    else
+      render json: { error: "Aucun fichier reçu." }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def composition_params
-    params.require(:composition).permit(:title, :key_signature, :style, :mood)
+    params.require(:composition).permit(:title, :key_signature, :style, :mood, :audio)
   end
 end

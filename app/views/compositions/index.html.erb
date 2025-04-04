@@ -3,7 +3,8 @@
     <h1 id="compositions-title"><i class="fa-solid fa-file-audio"></i>&nbsp &nbsp Mes Compositions</h1>
 
     <ul class="composition-list">
-      <% @compositions.each do |composition| %>
+      <% @compositions.compact.each do |composition| %>
+      <% next if composition.nil? || !composition.persisted? %>
         <li class="composition-item">
           <!-- Partie contenant le titre, les informations de la composition -->
           <div class="composition-info">
@@ -13,9 +14,9 @@
           </div>
 
           <!-- Partie audio -->
-          <% if composition.audio_url.present? %>
+          <% if composition.audio.attached? %>
             <audio controls class="composition-audio">
-              <source src="<%= composition.audio_url %>" type="audio/mpeg">
+              <source src="<%= url_for(composition.audio) %>" type="audio/mpeg">
               Ton navigateur ne supporte pas l’audio.
             </audio>
           <% else %>
@@ -27,7 +28,9 @@
             <button class="dropdown-btn">⋮</button> <!-- Trois points -->
             <div class="dropdown-content">
               <%= link_to 'Éditer', composition_path(composition), class: 'dropdown-item' %>
-              <%= link_to 'Télécharger', composition.audio_url, class: 'dropdown-item', download: composition.title %>
+              <% if composition && composition.audio.attached? %>
+              <%= link_to 'Télécharger', url_for(composition.audio), class: 'dropdown-item', download: composition.title %>
+              <% end %>
               <%= form_with model: composition, method: :delete, local: true,
                            data: { turbo: false, confirm: "Es-tu sûr de vouloir supprimer cette composition ?" } do %>
                 <button type="submit" class="dropdown-item">Supprimer</button>
