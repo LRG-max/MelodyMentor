@@ -23,17 +23,20 @@
       <% end %>
   </div>
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const moodSelect = document.getElementById("mood-select");
-      const keySignatureSelect = document.getElementById("key-signature-select");
-      const options = {
-        "majeur": ["DO", "SOL"],
-        "mineur": ["MI", "LA"]
-      };
+  document.addEventListener("turbo:load", function() {
+    const moodSelect = document.getElementById("mood-select");
+    const keySignatureSelect = document.getElementById("key-signature-select");
 
+    const options = {
+      "majeur": ["DO", "SOL"],
+      "mineur": ["MI", "LA"]
+    };
+
+    if (moodSelect && keySignatureSelect) {
       moodSelect.addEventListener("change", function() {
         const selectedMood = moodSelect.value;
         keySignatureSelect.innerHTML = '<option value="">Choisir une note</option>';
+
         if (options[selectedMood]) {
           options[selectedMood].forEach(note => {
             const option = document.createElement("option");
@@ -43,6 +46,7 @@
           });
         }
       });
-    });
-  </script>
+    }
+  });
+</script>
 <% end %>
