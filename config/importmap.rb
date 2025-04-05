@@ -9,6 +9,3 @@ pin "bootstrap", to: "bootstrap.min.js", preload: true
 pin "@popperjs/core", to: "popper.js", preload: true
 pin "shepherd.js" # @14.5.0
 pin "tour", to: "tour.js"
-pin "compositions_form"
-pin "compositions_show"
-pin "upload_recording"
