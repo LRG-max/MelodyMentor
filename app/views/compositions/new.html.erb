@@ -1,3 +1,4 @@
+
 <%= content_for :standalone_layout do %>
   <div class="main-wrapper">
     <div class="composition-new-container">
@@ -22,6 +23,7 @@
       <%= f.button :submit, "Enregistrer la composition", class: "btn-submit pulse" %>
       <% end %>
   </div>
+
   <script>
   document.addEventListener("turbo:load", function() {
     const moodSelect = document.getElementById("mood-select");
