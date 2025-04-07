@@ -29,7 +29,9 @@ class CompositionsController < ApplicationController
 
   def show
     @composition = Composition.find(params[:id])
+    @key_signature = @composition.key_signature # Récupérer la tonalité choisie
   end
+
 
   def save_audio
     @composition = Composition.find(params[:id])

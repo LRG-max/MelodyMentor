@@ -5,25 +5,18 @@
   <div>
     <ul>
       <li><h1><%= @composition.title %></h1></li>
-      <%# <li><p>Key signature: <%= @composition.key_signature %></p></li>
-      <%# <li><p>Genre: <%= @composition.style %></p></li>
     </ul>
   </div>
 
-
-<div id="records">
-  <button id="record" ><i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer</button>
-  <button id="stop" ><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
-  <audio controls ></audio>
-  <a id="download" href="" download><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
-  <button id="save-recording" data-url="<%= save_audio_composition_path(@composition) %>">
+  <div id="records">
+    <button id="record" aria-label="Démarrer l'enregistrement"><i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer</button>
+    <button id="stop" aria-label="Arrêter l'enregistrement"><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
+    <audio controls></audio>
+    <a id="download" href="" download aria-label="Télécharger l'enregistrement"><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
+    <button id="save-recording" data-url="<%= save_audio_composition_path(@composition) %>" aria-label="Sauvegarder l'enregistrement">
       💾 Sauvegarder
     </button>
-</div>
-
-
-
-
+  </div>
 
   <div class="composition players">
     <% audio_files = [
@@ -33,22 +26,42 @@
       { src: "/audios/Do-Lam/Mi m.mp3", id: "snd4" },
       { src: "/audios/Do-Lam/Ré m.mp3", id: "snd5" },
       { src: "/audios/Do-Lam/Sim5-.mp3", id: "snd6" },
-      { src: "/audios/Do-Lam/Sol.mp3", id: "snd7" }
+      { src: "/audios/Do-Lam/Sol.mp3", id: "snd7" },
+      { src: "/audios/Sol-Mim/Do7.mp3", id: "snd8" },
+      { src: "/audios/Sol-Mim/Lam7.mp3", id: "snd10" },
+      { src: "/audios/Sol-Mim/Mim.mp3", id: "snd11" },
+      { src: "/audios/Sol-Mim/Ré7.mp3", id: "snd12" },
+      { src: "/audios/Sol-Mim/Sim7.mp3", id: "snd13" },
+      { src: "/audios/Sol-Mim/Solmaj7.mp3", id: "snd14" }
     ] %>
 
     <div class="ma-compo">
       <h3>Ma composition</h3>
       <ul id="selected-order">
-        <!-- This will be dynamically populated by JavaScript -->
+        <!-- La liste sera remplie dynamiquement par JavaScript -->
       </ul>
       <button class="button pulse" id="play-sequence" >Jouer ma composition</button>
     </div>
 
-    <div class="accords">
+   <div class="accords">
       <h3>Accords à ajouter</h3>
       <ul id="sample-list">
         <% audio_files.each do |audio| %>
           <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
+
+          <% if @composition.key_signature == 'DO' || @composition.key_signature == 'do' %>
+            <% show_accord = audio[:src].include?('Do-Lam') %>
+          <% elsif @composition.key_signature == 'SOL' || @composition.key_signature == 'sol' %>
+            <% show_accord = audio[:src].include?('Sol-Mim') %>
+          <% elsif @composition.key_signature == 'MI' || @composition.key_signature == 'mi' %>
+            <% show_accord = audio[:src].include?('Sol-Mim') %>
+          <% elsif @composition.key_signature == 'LA' || @composition.key_signature == 'la' %>
+            <% show_accord = audio[:src].include?('Do-Lam') %>
+          <% else %>
+            <% show_accord = false %>
+          <% end %>
+
+         <% if show_accord %>
           <li>
             <div class="sample-container">
               <button class="audio-button" data-audio-id="<%= audio[:id] %>">
@@ -61,13 +74,13 @@
               </audio>
             </div>
           </li>
+          <% end %>
         <% end %>
       </ul>
     </div>
+</div>
 
 
-
-  </div>
 
 
 

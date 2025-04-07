@@ -1,10 +1,10 @@
 document.addEventListener('turbo:load', () => {
   // Utilisation de setTimeout pour donner le temps au DOM de se charger
   setTimeout(() => {
-    initializeScript();
+      initializeScript();
     setupRecording();
     initializeTimeline();
-  }, 500); // Attendre 500 ms avant d'exécuter le code pour être sûr que le DOM est chargé
+  }, 500);  // Attendre 500 ms avant d'exécuter le code pour être sûr que le DOM est chargé
 });
 
 function initializeScript() {
