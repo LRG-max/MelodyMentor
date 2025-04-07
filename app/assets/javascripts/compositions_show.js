@@ -1,7 +1,7 @@
 document.addEventListener('turbo:load', () => {
   console.log("Turbo:load déclenché");
   setTimeout(() => {
-      initializeScript();
+    initializeScript();
     setupRecording();
     initializeTimeline();
   }, 500);  // Attendre 500 ms avant d'exécuter le code pour être sûr que le DOM est chargé
