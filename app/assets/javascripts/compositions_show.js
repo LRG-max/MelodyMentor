@@ -1,7 +1,7 @@
 document.addEventListener('turbo:load', () => {
-  // Utilisation de setTimeout pour donner le temps au DOM de se charger
+  console.log("Turbo:load déclenché");
   setTimeout(() => {
-      initializeScript();
+    initializeScript();
     setupRecording();
     initializeTimeline();
   }, 500);  // Attendre 500 ms avant d'exécuter le code pour être sûr que le DOM est chargé
@@ -280,4 +280,18 @@ function initializeTimeline() {
 
     playNext();
   });
-}
+
+  const resetButton = document.getElementById('reset-order');
+  if (resetButton) {
+  console.log('Button "reset-order" trouvé');
+  resetButton.addEventListener('click', () => {
+    console.log('Réinitialisation lancée');
+    if (!confirm("Souhaites-tu vraiment réinitialiser ta composition ?")) return;
+
+    playOrder = [];
+    localStorage.removeItem(localStorageKey);
+    renderSelectedOrder();
+  });
+} else {
+  console.log('Button "reset-order" non trouvé');
+}}
