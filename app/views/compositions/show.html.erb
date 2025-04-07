@@ -1,5 +1,6 @@
-<%= javascript_include_tag 'compositions_show', 'data-turbo-track': 'reload' %>
 <%= javascript_include_tag 'upload_recording', 'data-turbo-track': 'reload' %>
+<%= javascript_include_tag 'compositions_show', 'data-turbo-track': 'reload' %>
+
 
 <div class="composition" data-composition-id="<%= @composition.id %>">
   <div>
@@ -40,8 +41,15 @@
       <ul id="selected-order">
         <!-- La liste sera remplie dynamiquement par JavaScript -->
       </ul>
-      <button class="button pulse" id="play-sequence" >Jouer ma composition</button>
+      <div class="composition-actions">
+        <button class="button pulse" id="play-sequence">
+          <i class="fa-solid fa-play"></i> Jouer ma composition
+        </button>
+        <button class="button pulse" id="reset-order">
+          <i class="fa-solid fa-rotate-right"></i> Réinitialiser
+        </button>
     </div>
+      </div>
 
    <div class="accords">
       <h3>Accords à ajouter</h3>
