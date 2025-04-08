@@ -34,3 +34,38 @@
   padding: 40px;
   font-size: 20px;
 }
+
+.composition-item.add-new {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #ccc;
+  border-radius: 12px;
+  padding: 40px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.add-composition-card {
+  text-decoration: none;
+  color: inherit;
+  text-align: center;
+  width: 100%;
+}
+
+.add-composition-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.big-plus {
+  font-size: 48px;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.composition-item.add-new:hover {
+  background-color: #f9f9f9;
+}

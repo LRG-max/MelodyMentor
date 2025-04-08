@@ -11,15 +11,15 @@
     <% end %>
 
     <%= link_to new_composition_path, class: "menu-link #{'active' if current_page?(new_composition_path)}" do %>
-      <i class="fa-solid fa-music"></i> Créer
+      <i class="fa-solid fa-sliders"></i> Créer
     <% end %>
 
     <%= link_to compositions_path, class: "menu-link #{'active' if controller_name == 'compositions' && action_name.in?(%w[index show])}" do %>
-      <i class="fa-solid fa-microphone-lines"></i> Mes Compos
+      <i class="fa-solid fa-file-audio"></i> Mes Compos
     <% end %>
 
     <%= link_to challenges_path, class: "menu-link #{'active' if current_page?(challenges_path)}" do %>
-      <i class="fa-solid fa-trophy"></i> Défis
+      <i class="fa-solid fa-drum"></i> Défis
     <% end %>
 
     <%= link_to new_preference_path, class: "menu-link" do %>
