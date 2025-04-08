@@ -163,6 +163,7 @@ function initializeTimeline() {
 
   const renderSelectedOrder = () => {
     selectedOrderList.innerHTML = '';
+    console.log("Play Order dans la vue d'édition :", playOrder);
     if (playOrder.length === 0) {
       const placeholder = document.createElement('li');
       placeholder.textContent = "Ajoute des accords à ta composition.";

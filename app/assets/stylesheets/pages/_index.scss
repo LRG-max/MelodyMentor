@@ -46,6 +46,66 @@
   margin-bottom: 60px;
 }
 
+.composition-subtitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 8px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.composition-subtitle .badge {
+  background-color: #333;
+  color: #82e2f3;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.composition-subtitle .badge i {
+  font-size: 1rem;
+  background-color: #333;
+}
+
+.composition-subtitle .badge:hover {
+  background-color: rgba(130, 226, 243, 0.3);
+}
+
+.composition-subtitle .badge:nth-child(2) {
+  background-color: #333;
+}
+
+.composition-subtitle .badge:nth-child(2):hover {
+  background-color: rgba(248, 198, 210, 0.3);
+}
+
+.icon-tonalite.major {
+  color: #ffeb3b;
+}
+
+.icon-tonalite.minor {
+  color: #c084fc;
+}
+
+.icon-music {
+  color: #020414;
+}
+
+.tonalite-badge {
+  color: white;
+  padding: 0.4em 0.7em;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
 .dropdown {
   position: absolute;
   top: 25px;
@@ -113,4 +173,41 @@ button.dropdown-item:hover {
   gap: 20px;
   padding: 0;
   list-style: none;
+}
+
+.composition-meta-line {
+  background: rgba(255, 255, 255, 0.05); /* fond subtil */
+  color: #ddd;
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  margin-top: 0.4em;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.composition-meta-line:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.meta-icon {
+  color: #00bfff; /* bleu clair, visible sur fond foncé */
+  font-size: 1.1rem;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+/* Animation douce de pulsation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
 }
