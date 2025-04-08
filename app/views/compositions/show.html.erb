@@ -6,6 +6,16 @@
   <div>
     <ul>
       <li><h1><%= @composition.title %></h1></li>
+        <div class="badges-container">
+          <span class="badge">
+            <i class="fa-solid fa-music"></i>
+            <%= @composition.key_signature %>
+          </span>
+          <span class="badge">
+            <i class="fa-solid <%= @composition.mood == 'majeur' ? 'fa-sun' : 'fa-cloud-rain' %>"></i>
+            <%= @composition.mood.capitalize %>
+        </span>
+      </div>
     </ul>
   </div>
 
@@ -37,7 +47,6 @@
     ] %>
 
     <div class="ma-compo">
-      <h3>Ma composition</h3>
       <ul id="selected-order">
         <!-- La liste sera remplie dynamiquement par JavaScript -->
       </ul>
@@ -87,10 +96,4 @@
       </ul>
     </div>
 </div>
-
-
-
-
-
-  <h6><%= link_to "Retour", compositions_path %></h6>
 </div>
