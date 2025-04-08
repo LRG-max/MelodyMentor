@@ -3,14 +3,18 @@
     <h1 id="compositions-title"><i class="fa-solid fa-file-audio"></i>&nbsp &nbsp Mes Compositions</h1>
 
     <ul class="composition-list">
-      <% @compositions.compact.each do |composition| %>
+      <% @compositions.compact.sort_by(&:created_at).reverse.each do |composition| %>
       <% next if composition.nil? || !composition.persisted? %>
         <li class="composition-item">
           <!-- Partie contenant le titre, les informations de la composition -->
           <div class="composition-info">
             <h2><%= link_to composition.title, composition_path(composition), data: { turbo: false }  %></h2>
+            <p class="composition-meta">Tonalité : <%= composition.key_signature %></p>
+            <p class="composition-meta">Humeur : <%= composition.mood.capitalize %></p>
             <p class="composition-meta">⏳ Durée : <%= composition.formatted_duration %></p>
             <p class="composition-meta">📅 Créée le : <%= composition.created_at.strftime("%d/%m/%Y") %></p>
+
+
           </div>
 
           <!-- Partie audio -->
@@ -37,6 +41,16 @@
               <% end %>
             </div>
           </div>
+
+
+    <% end %>
+  </li>
+            <li class="composition-item">
+            <%= link_to new_composition_path, class: 'add-composition-card' do %>
+            <div class="add-composition-content">
+            <div class="big-plus"><i class="fa-solid fa-plus"></i></i></div>
+                <p>Ajouter une composition</p>
+            </div>
 
         </li>
       <% end %>
