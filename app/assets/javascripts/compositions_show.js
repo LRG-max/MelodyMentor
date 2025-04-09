@@ -1,5 +1,3 @@
-let mediaRecorder = null;
-let audioContext = null;
 document.addEventListener('turbo:load', () => {
   console.log("Turbo:load déclenché");
 
@@ -39,38 +37,33 @@ function setupRecording() {
     return;
   }
 
+  let mediaRecorder;
   let audioChunks = [];
-  let destination = null;
+  let audioContext;
+  let destination;
   let sourceNodes = [];
 
-  if (recButton.dataset.bound) return;
+  if (!recButton || recButton.dataset.bound) return;
   recButton.dataset.bound = "true";
 
+  // Démarrer l'enregistrement
   recButton.addEventListener('click', async () => {
     if (!window.AudioContext) {
       alert("AudioContext n'est pas supporté.");
       return;
     }
 
-    if (audioContext && audioContext.state !== 'closed') {
-      await audioContext.close();
-    }
-
     audioContext = new AudioContext();
     destination = audioContext.createMediaStreamDestination();
     mediaRecorder = new MediaRecorder(destination.stream);
+    mediaRecorder.start();
+    recButton.style.color = "red";
+    recButton.textContent = "En cours...";
     audioChunks = [];
 
-
-    const originalIds = ['snd1', 'snd2', 'snd3', 'snd4', 'snd5', 'snd6', 'snd7'];
-    const audioArray = originalIds.map(id => {
-      const original = document.getElementById(id);
-      if (!original) return null;
-      const clone = original.cloneNode(true);
-      clone.id = `${id}-clone`;
-      document.body.appendChild(clone);
-      return clone;
-    }).filter(el => el);
+    const audioArray = [
+      'snd1', 'snd2', 'snd3', 'snd4', 'snd5', 'snd6', 'snd7'
+    ].map(id => document.getElementById(id)).filter(el => el);
 
     audioArray.forEach(audio => {
       const source = audioContext.createMediaElementSource(audio);
@@ -83,32 +76,24 @@ function setupRecording() {
       audioChunks.push(event.data);
     };
 
+    // Lorsque l'enregistrement est terminé
     mediaRecorder.onstop = async () => {
       const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
       const arrayBuffer = await audioBlob.arrayBuffer();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
       const wavBlob = await audioBufferToWav(audioBuffer);
       const audioURL = URL.createObjectURL(wavBlob);
-
       audioElement.src = audioURL;
       downloadLink.href = audioURL;
       downloadLink.download = 'recording.wav';
-
       recButton.style.color = "";
       recButton.innerHTML = '<i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer';
-
       cleanupAudioContext();
-
-
-      audioArray.forEach(audio => audio.remove());
     };
-
-    mediaRecorder.start();
-    recButton.style.color = "red";
-    recButton.textContent = "En cours...";
   });
 
-  stopButton.addEventListener('click', () => {
+  // Arrêter l'enregistrement
+  stopButton?.addEventListener('click', () => {
     if (mediaRecorder && mediaRecorder.state !== "inactive") {
       console.log("Arrêt de l'enregistrement...");
       mediaRecorder.stop();
@@ -117,22 +102,14 @@ function setupRecording() {
     }
   });
 
+  // Nettoyage du contexte audio
   function cleanupAudioContext() {
     if (sourceNodes.length) {
       sourceNodes.forEach(node => node.disconnect());
       sourceNodes = [];
     }
-
-    if (destination) {
-      destination.disconnect();
-      destination = null;
-    }
-
-    if (audioContext && audioContext.state !== 'closed') {
-      audioContext.close();
-    }
-
-    audioContext = null;
+    destination?.disconnect();
+    audioContext?.close();
   }
 }
 
