@@ -5,8 +5,6 @@ class Composition < ApplicationRecord
   belongs_to :user
   has_one_attached :audio
 
-
-
   def formatted_duration
     return "Non spécifiée" unless duration.present?
 
