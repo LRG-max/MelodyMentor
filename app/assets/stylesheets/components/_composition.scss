@@ -238,6 +238,10 @@ button.selected-button:active {
   height: 120px; /* Set a fixed height for the container */
 }
 
+.sample-container:hover {
+  transform: translateY(-4px);
+  transition: transform 0.2s ease;
+}
 
 
 .add-to-order {

@@ -28,7 +28,6 @@ document.addEventListener("turbo:load", () => {
       .then(response => {
         if (response.ok) {
           alert("✅ Enregistrement sauvegardé !");
-          // window.location.reload(); // Recharge pour afficher l’audio attaché
         } else {
           alert("❌ Erreur lors de la sauvegarde !");
         }

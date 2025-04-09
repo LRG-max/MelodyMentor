@@ -1,39 +1,41 @@
 document.addEventListener('turbo:load', () => {
   console.log("Turbo:load déclenché");
+
   setTimeout(() => {
     initializeScript();
     setupRecording();
     initializeTimeline();
-  }, 500);  // Attendre 500 ms avant d'exécuter le code pour être sûr que le DOM est chargé
+  }, 500); // Attendre 500 ms avant d'exécuter le code pour être sûr que le DOM est chargé
 });
 
+// Initialisation du script
 function initializeScript() {
-  // On tente de récupérer l'élément .composition après un délai
   const compositionElement = document.querySelector('.composition');
-
   if (!compositionElement) {
     console.error('L\'élément .composition n\'a pas été trouvé');
     return;
   }
 
   const compositionId = compositionElement.dataset.compositionId;
-
   if (!compositionId) {
     console.error('L\'ID de la composition est manquant');
     return;
   }
 
   console.log("ID de la composition : ", compositionId);
-
-  // Insère ton code logique pour utiliser compositionId ici
 }
 
-/* -------- 🎙 ENREGISTREMENT -------- */
+// Setup de l'enregistrement audio
 function setupRecording() {
   const recButton = document.getElementById('record');
   const stopButton = document.getElementById('stop');
   const downloadLink = document.getElementById('download');
   const audioElement = document.querySelector("audio");
+
+  if (!recButton || !stopButton || !downloadLink || !audioElement) {
+    console.error("Des éléments nécessaires sont manquants dans le DOM !");
+    return;
+  }
 
   let mediaRecorder;
   let audioChunks = [];
@@ -44,6 +46,7 @@ function setupRecording() {
   if (!recButton || recButton.dataset.bound) return;
   recButton.dataset.bound = "true";
 
+  // Démarrer l'enregistrement
   recButton.addEventListener('click', async () => {
     if (!window.AudioContext) {
       alert("AudioContext n'est pas supporté.");
@@ -73,6 +76,7 @@ function setupRecording() {
       audioChunks.push(event.data);
     };
 
+    // Lorsque l'enregistrement est terminé
     mediaRecorder.onstop = async () => {
       const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
       const arrayBuffer = await audioBlob.arrayBuffer();
@@ -88,12 +92,17 @@ function setupRecording() {
     };
   });
 
+  // Arrêter l'enregistrement
   stopButton?.addEventListener('click', () => {
     if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      console.log("Arrêt de l'enregistrement...");
       mediaRecorder.stop();
+    } else {
+      console.warn("Aucun enregistrement actif à arrêter");
     }
   });
 
+  // Nettoyage du contexte audio
   function cleanupAudioContext() {
     if (sourceNodes.length) {
       sourceNodes.forEach(node => node.disconnect());
@@ -104,6 +113,7 @@ function setupRecording() {
   }
 }
 
+// Convertir le buffer audio en fichier WAV
 async function audioBufferToWav(audioBuffer) {
   const numOfChan = audioBuffer.numberOfChannels;
   const length = audioBuffer.length * numOfChan * 2 + 44;
@@ -148,7 +158,7 @@ function writeUTFBytes(view, offset, string) {
   }
 }
 
-/* -------- 🎼 TIMELINE -------- */
+// Initialisation de la timeline (gestion des échantillons audio)
 function initializeTimeline() {
   const sampleList = document.getElementById('sample-list');
   const selectedOrderList = document.getElementById('selected-order');
@@ -210,7 +220,7 @@ function initializeTimeline() {
     renderSelectedOrder();
   });
 
-  // Playback buttons
+  // Boutons de lecture
   const togglePlayButton = (audioElement, icon) => {
     if (!audioElement.paused) {
       audioElement.pause();
@@ -237,62 +247,19 @@ function initializeTimeline() {
     }
   };
 
-  sampleList.addEventListener('click', (event) => {
-    const btn = event.target.closest('.audio-button');
-    if (!btn) return;
-    const audioId = btn.dataset.audioId;
-    const audio = document.getElementById(audioId);
-    const icon = btn.querySelector('i');
-    togglePlayButton(audio, icon);
-  });
-
-  selectedOrderList.addEventListener('click', (event) => {
-    const btn = event.target.closest('.selected-button');
-    if (!btn) return;
-    const audioId = btn.dataset.audioId;
-    const audio = document.getElementById(audioId);
-    const icon = btn.querySelector('i');
-    togglePlayButton(audio, icon);
-  });
-
   playSequenceButton.addEventListener('click', () => {
-    if (playOrder.length === 0) {
-      alert('Ajoute des accords à ta composition!');
-      return;
-    }
+    const audiosToPlay = playOrder.map(audioId => document.getElementById(audioId));
+    let currentIndex = 0;
 
-    let index = 0;
+    const playNextAudio = () => {
+      const audio = audiosToPlay[currentIndex];
+      const icon = document.querySelector(`button[data-audio-id="${audio.id}"] i`);
+      togglePlayButton(audio, icon);
 
-    const playNext = () => {
-      if (index >= playOrder.length) return;
-      const audio = document.getElementById(playOrder[index]);
-      audio.play().catch(err => console.warn("Erreur de lecture:", err));
-      audio.onended = () => {
-        index++;
-        playNext();
-      };
+      currentIndex = (currentIndex + 1) % audiosToPlay.length;
     };
 
-    // Stop all current audios
-    document.querySelectorAll('audio').forEach(audio => {
-      audio.pause();
-      audio.currentTime = 0;
-    });
-
-    playNext();
+    playNextAudio();
+    setInterval(playNextAudio, 5000); // Chaque 5 secondes
   });
-
-  const resetButton = document.getElementById('reset-order');
-  if (resetButton) {
-  console.log('Button "reset-order" trouvé');
-  resetButton.addEventListener('click', () => {
-    console.log('Réinitialisation lancée');
-    if (!confirm("Souhaites-tu vraiment réinitialiser ta composition ?")) return;
-
-    playOrder = [];
-    localStorage.removeItem(localStorageKey);
-    renderSelectedOrder();
-  });
-} else {
-  console.log('Button "reset-order" non trouvé');
-}}
+}

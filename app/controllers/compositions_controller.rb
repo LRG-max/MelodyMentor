@@ -9,6 +9,7 @@ class CompositionsController < ApplicationController
 
   def edit
     @composition = Composition.find(params[:id])
+    @key_signature = @composition.key_signature
   end
 
   def create

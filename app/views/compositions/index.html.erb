@@ -8,7 +8,7 @@
         <li class="composition-item">
           <div class="composition-info">
             <!-- Titre -->
-            <h2><%= link_to composition.title, composition_path(composition), data: { turbo: false } %></h2>
+            <h2><%= link_to composition.title, edit_composition_path(composition), data: { turbo: false } %></h2>
 
             <!-- Sous-titre : tonalité et humeur -->
             <div class="composition-subtitle">
@@ -39,7 +39,7 @@
           <div class="dropdown">
             <button class="dropdown-btn">⋮</button> <!-- Trois points -->
             <div class="dropdown-content">
-              <%= link_to 'Éditer', composition_path(composition), class: 'dropdown-item' %>
+              <%= link_to 'Éditer', edit_composition_path(composition), class: 'dropdown-item' %>
               <% if composition && composition.audio.attached? %>
               <%= link_to 'Télécharger', url_for(composition.audio), class: 'dropdown-item', download: composition.title %>
               <% end %>

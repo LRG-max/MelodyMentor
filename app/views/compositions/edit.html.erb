@@ -1,33 +1,35 @@
 <%= javascript_include_tag 'upload_recording', 'data-turbo-track': 'reload' %>
 <%= javascript_include_tag 'compositions_show', 'data-turbo-track': 'reload' %>
 
-<%= content_for :standalone_layout do %>
-  <div class="main-wrapper">
-    <div class="composition-edit-container">
-      <h2><i class="fa-solid fa-sliders"></i>&nbsp &nbsp Modifier les accords de ta composition</h2>
+<div class="composition" data-composition-id="<%= @composition.id %>">
+  <div>
+    <ul>
+      <li><h1><%= @composition.title %></h1></li>
+        <div class="badges-container">
+          <span class="badge">
+            <i class="fa-solid fa-music"></i>
+            <%= @composition.key_signature %>
+          </span>
+          <span class="badge">
+            <i class="fa-solid <%= @composition.mood == 'majeur' ? 'fa-sun' : 'fa-cloud-rain' %>"></i>
+            <%= @composition.mood.capitalize %>
+        </span>
+      </div>
+    </ul>
+  </div>
 
-      <!-- Affichage des informations de la composition -->
-      <div class="composition-details" data-composition-id="<%= @composition.id %>">
-        <ul>
-          <li><h1><%= @composition.title %></h1></li>
-          <div class="badges-container">
-            <span class="badge">
-              <i class="fa-solid fa-music"></i>
-              <%= @composition.key_signature %>
-            </span>
-            <span class="badge">
-              <i class="fa-solid <%= @composition.mood == 'majeur' ? 'fa-sun' : 'fa-cloud-rain' %>"></i>
-              <%= @composition.mood.capitalize %>
-            </span>
-          </div>
-        </ul>
+      <div id="records">
+        <button id="record" aria-label="Démarrer l'enregistrement"><i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer</button>
+        <button id="stop" aria-label="Arrêter l'enregistrement"><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
+        <audio controls></audio>
+        <a id="download" href="" download aria-label="Télécharger l'enregistrement"><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
+        <button id="save-recording" data-url="<%= save_audio_composition_path(@composition) %>" aria-label="Sauvegarder l'enregistrement">
+          💾 Sauvegarder
+        </button>
       </div>
 
-      <!-- Liste des accords à ajouter -->
-      <div class="accords">
-        <h3>Accords à ajouter</h3>
-        <ul id="sample-list">
-          <% audio_files = [
+      <div class="composition players">
+        <% audio_files = [
             { src: "/audios/Do-Lam/Do7.mp3", id: "snd1" },
             { src: "/audios/Do-Lam/Fa.mp3", id: "snd2" },
             { src: "/audios/Do-Lam/Lam7.mp3", id: "snd3" },
@@ -43,20 +45,34 @@
             { src: "/audios/Sol-Mim/Solmaj7.mp3", id: "snd14" }
           ] %>
 
+        <ul id="selected-order">
+        </ul>
+
+        <div class="composition-actions">
+          <button class="button pulse" id="play-sequence">
+            <i class="fa-solid fa-play"></i> Jouer ma composition
+          </button>
+          <button class="button pulse" id="reset-order">
+            <i class="fa-solid fa-rotate-right"></i> Réinitialiser
+          </button>
+        </div>
+      </div>
+
+      <!-- Liste des accords à ajouter -->
+      <div class="accords">
+        <h3>Accords à ajouter</h3>
+        <ul id="sample-list">
+
+          <% key = @composition.key_signature.downcase %>
+          <% target_directory = case key
+                                when 'do', 'la' then 'Do-Lam'
+                                when 'sol', 'mi' then 'Sol-Mim'
+                                else 'Do-Lam'
+                                end %>
+
           <% audio_files.each do |audio| %>
             <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
-
-            <% if @composition.key_signature.downcase == 'do' %>
-              <% show_accord = audio[:src].include?('Do-Lam') %>
-            <% elsif @composition.key_signature.downcase == 'sol' %>
-              <% show_accord = audio[:src].include?('Sol-Mim') %>
-            <% elsif @composition.key_signature.downcase == 'mi' %>
-              <% show_accord = audio[:src].include?('Sol-Mim') %>
-            <% elsif @composition.key_signature.downcase == 'la' %>
-              <% show_accord = audio[:src].include?('Do-Lam') %>
-            <% else %>
-              <% show_accord = false %>
-            <% end %>
+            <% show_accord = audio[:src].include?(target_directory) %>
 
             <% if show_accord %>
               <li>
@@ -76,30 +92,6 @@
         </ul>
       </div>
 
-      <div class="composition players">
-        <ul id="selected-order">
-          <% @audio_files.each do |audio| %>
-            <li data-audio-id="<%= audio.id %>">
-              <button class="selected-button" data-audio-id="<%= audio.id %>">
-                <i class="fa-solid fa-circle-play"></i>
-                <div><%= audio.filename %></div>
-              </button>
-              <button class="remove-from-order">-</button>
-            </li>
-          <% end %>
-        </ul>
-        <div class="composition-actions">
-          <button class="button pulse" id="play-sequence">
-            <i class="fa-solid fa-play"></i> Jouer ma composition
-          </button>
-          <button class="button pulse" id="reset-order">
-            <i class="fa-solid fa-rotate-right"></i> Réinitialiser
-          </button>
-        </div>
-      </div>
 
     </div>
   </div>
-<% end %>
-
-<%= javascript_pack_tag 'composition_edit', 'data-turbo-track': 'reload' %> <!-- Inclure le JS externe -->
