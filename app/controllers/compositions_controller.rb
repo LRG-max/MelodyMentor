@@ -16,7 +16,7 @@ class CompositionsController < ApplicationController
     @composition = Composition.new(composition_params)
     @composition.user = current_user if user_signed_in?
     if @composition.save
-      redirect_to composition_path(@composition)
+      redirect_to composition_path(@composition, reload: true)
     else
       render :new, status: :unprocessable_entity
     end
