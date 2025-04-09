@@ -8,6 +8,9 @@
 
 .composition {
 
+
+
+
   color: white;
   // margin-top: 60px;
 
@@ -37,7 +40,7 @@
   flex-direction: row; /* Arrange elements in a row */
   align-items: center; /* Align elements vertically on the same line */
   justify-content: center; /* Center elements horizontally within the container */
-  gap: 10px; /* Add spacing between elements */
+  gap: 0px; /* Add spacing between elements */
   height: auto; /* Adjust height as needed */
   border: #82e2f3 solid 2px; /* Add a border around the container */
   border-radius: 50px; /* Add rounded corners to the container */
@@ -51,7 +54,7 @@
   background: none;
   border: none;
   font-family: Tektur, Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   cursor: pointer;
 }
 
