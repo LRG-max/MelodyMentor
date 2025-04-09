@@ -1,10 +1,14 @@
 class CompositionsController < ApplicationController
   def index
-    @compositions = Composition.all
+    @compositions = Composition.all.uniq { |composition| composition.title }
   end
 
   def new
     @composition = Composition.new(key_signature: nil, style: nil, mood: nil)
+  end
+
+  def edit
+    @composition = Composition.find(params[:id])
   end
 
   def create
@@ -52,6 +56,17 @@ class CompositionsController < ApplicationController
       head :ok
     else
       render json: { error: "Aucun fichier reçu." }, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    @composition = Composition.find(params[:id])
+
+    # Si la composition se met à jour avec succès
+    if @composition.update(composition_params)
+      redirect_to @composition, notice: 'Composition mise à jour avec succès.'
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
