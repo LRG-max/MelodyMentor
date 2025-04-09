@@ -25,7 +25,7 @@
     <audio controls></audio>
     <a id="download" href="" download aria-label="Télécharger l'enregistrement"><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
     <button id="save-recording" data-url="<%= save_audio_composition_path(@composition) %>" aria-label="Sauvegarder l'enregistrement">
-      💾 Sauvegarder
+      <i class="fa-solid fa-floppy-disk"></i></i>&nbsp Sauvegarder
     </button>
   </div>
 
@@ -51,14 +51,14 @@
         <!-- La liste sera remplie dynamiquement par JavaScript -->
       </ul>
       <div class="composition-actions">
-        <button class="button pulse" id="play-sequence">
+        <button class="button pulse btn-pulse" id="play-sequence">
           <i class="fa-solid fa-play"></i> Jouer ma composition
         </button>
         <button class="button pulse" id="reset-order">
           <i class="fa-solid fa-rotate-right"></i> Réinitialiser
         </button>
-    </div>
       </div>
+    </div>
 
    <div class="accords">
       <h3>Accords à ajouter</h3>

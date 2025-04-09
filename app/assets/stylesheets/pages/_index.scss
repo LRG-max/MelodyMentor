@@ -209,7 +209,7 @@ button.dropdown-item:hover {
   animation: pulse 2s infinite ease-in-out;
 }
 
-@keyframes pulse {
+/* @keyframes pulse {
   0%, 100% {
     opacity: 0.8;
     transform: scale(1);
@@ -218,7 +218,7 @@ button.dropdown-item:hover {
     opacity: 1;
     transform: scale(1.1);
   }
-}
+} */
 
 .big-plus i {
   color: #ffeb3b;

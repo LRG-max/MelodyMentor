@@ -11,7 +11,7 @@
     <% end %>
 
     <%= link_to new_composition_path, class: "menu-link #{'active' if current_page?(new_composition_path)}" do %>
-      <i class="fa-solid fa-sliders"></i> Créer
+      <i class="fa-solid fa-music"></i> Créer
     <% end %>
 
     <%= link_to compositions_path, class: "menu-link #{'active' if controller_name == 'compositions' && action_name.in?(%w[index show])}" do %>
@@ -19,11 +19,7 @@
     <% end %>
 
     <%= link_to challenges_path, class: "menu-link #{'active' if current_page?(challenges_path)}" do %>
-      <i class="fa-solid fa-drum"></i> Défis
-    <% end %>
-
-    <%= link_to new_preference_path, class: "menu-link" do %>
-      <i class="fa-solid fa-lightbulb"></i> Des Idées ?
+      <i class="fa-solid fa-trophy"></i> Défis
     <% end %>
 
     <% if user_signed_in? %>
