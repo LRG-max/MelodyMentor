@@ -6,25 +6,17 @@
       <% @compositions.compact.sort_by(&:created_at).reverse.each do |composition| %>
       <% next if composition.nil? || !composition.persisted? %>
         <li class="composition-item">
+          <!-- Partie contenant le titre, les informations de la composition -->
           <div class="composition-info">
-            <!-- Titre -->
-            <h2><%= link_to composition.title, composition_path(composition), data: { turbo: false } %></h2>
+            <h2><%= link_to composition.title, composition_path(composition), data: { turbo: false }  %></h2>
+            <p class="composition-meta">Tonalité : <%= composition.key_signature %></p>
+            <p class="composition-meta">Humeur : <%= composition.mood.capitalize %></p>
+            <p class="composition-meta">⏳ Durée : <%= composition.formatted_duration %></p>
+            <p class="composition-meta">📅 Créée le : <%= composition.created_at.strftime("%d/%m/%Y") %></p>
 
-            <!-- Sous-titre : tonalité et humeur -->
-            <div class="composition-subtitle">
-              <span class="badge">
-                <i class="fa-solid fa-music icon-music"></i>
-                <%= composition.key_signature %>  <!-- Affichage de la tonalité -->
-              </span>
-              <span class="badge tonalite-badge">
-                <i class="fa-solid <%= composition.mood == 'majeur' ? 'fa-sun major' : 'fa-cloud-rain minor' %> icon-tonalite"></i>
-              </span>
-            </div>
 
-          <div class="composition-meta-line centered-meta">
-            <i class="fa-solid fa-calendar-days meta-icon"></i>
-            <span><%= composition.created_at.strftime("%d/%m/%Y") %></span>
           </div>
+
           <!-- Partie audio -->
           <% if composition.audio.attached? %>
             <audio controls class="composition-audio">
@@ -56,8 +48,13 @@
             <li class="composition-item">
             <%= link_to new_composition_path, class: 'add-composition-card' do %>
             <div class="add-composition-content">
+<<<<<<< HEAD
               <div class="big-plus"> + </div>
               <p class="creer">Créer une nouvelle composition</p>
+=======
+            <div class="big-plus"><i class="fa-solid fa-plus"></i></i></div>
+                <p>Ajouter une composition</p>
+>>>>>>> 905c4e30435b304873f4c16b135568235408f648
             </div>
 
         </li>
