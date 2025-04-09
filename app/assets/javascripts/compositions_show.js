@@ -1,5 +1,8 @@
+// === Global variables ===
 let mediaRecorder = null;
 let audioContext = null;
+
+// === On Turbo Load ===
 document.addEventListener('turbo:load', () => {
   console.log("Turbo:load déclenché");
 
@@ -7,14 +10,14 @@ document.addEventListener('turbo:load', () => {
     initializeScript();
     setupRecording();
     initializeTimeline();
-  }, 500); // Attendre 500 ms avant d'exécuter le code pour être sûr que le DOM est chargé
+  }, 500);
 });
 
-// Initialisation du script
+// === Script Initialization ===
 function initializeScript() {
   const compositionElement = document.querySelector('.composition');
   if (!compositionElement) {
-    console.error('L\'élément .composition n\'a pas été trouvé');
+    console.error('L\'\u00e9lément .composition n\'a pas été trouvé');
     return;
   }
 
@@ -27,14 +30,16 @@ function initializeScript() {
   console.log("ID de la composition : ", compositionId);
 }
 
-// Setup de l'enregistrement audio
+// === Setup Audio Recording (Chrome Friendly) ===
 function setupRecording() {
   const recButton = document.getElementById('record');
   const stopButton = document.getElementById('stop');
   const downloadLink = document.getElementById('download');
-  const audioElement = document.querySelector("audio");
+  const audioElement = document.querySelector("#records audio");
+  const compositionElement = document.querySelector('.composition');
+  const compositionId = compositionElement?.dataset.compositionId;
 
-  if (!recButton || !stopButton || !downloadLink || !audioElement) {
+  if (!recButton || !stopButton || !downloadLink || !audioElement || !compositionId) {
     console.error("Des éléments nécessaires sont manquants dans le DOM !");
     return;
   }
@@ -47,6 +52,15 @@ function setupRecording() {
   recButton.dataset.bound = "true";
 
   recButton.addEventListener('click', async () => {
+    const localStorageKey = `playOrder_${compositionId}`;
+    const playOrder = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+    console.log("PlayOrder au moment de l'enregistrement :", playOrder);
+
+    if (playOrder.length === 0) {
+      alert("Aucun son sélectionné à enregistrer.");
+      return;
+    }
+
     if (!window.AudioContext) {
       alert("AudioContext n'est pas supporté.");
       return;
@@ -57,22 +71,26 @@ function setupRecording() {
     }
 
     audioContext = new AudioContext();
+    if (audioContext.state === 'suspended') await audioContext.resume();
+
     destination = audioContext.createMediaStreamDestination();
     mediaRecorder = new MediaRecorder(destination.stream);
     audioChunks = [];
 
-
-    const originalIds = ['snd1', 'snd2', 'snd3', 'snd4', 'snd5', 'snd6', 'snd7'];
-    const audioArray = originalIds.map(id => {
+    const clones = playOrder.map((id) => {
       const original = document.getElementById(id);
       if (!original) return null;
-      const clone = original.cloneNode(true);
-      clone.id = `${id}-clone`;
+
+      const sourceTag = original.querySelector('source');
+      const clone = document.createElement('audio');
+      clone.src = sourceTag?.src || original.src;
+      clone.preload = 'auto';
+      clone.crossOrigin = 'anonymous';
       document.body.appendChild(clone);
       return clone;
-    }).filter(el => el);
+    }).filter(Boolean);
 
-    audioArray.forEach(audio => {
+    clones.forEach(audio => {
       const source = audioContext.createMediaElementSource(audio);
       source.connect(destination);
       source.connect(audioContext.destination);
@@ -85,27 +103,62 @@ function setupRecording() {
 
     mediaRecorder.onstop = async () => {
       const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-      const arrayBuffer = await audioBlob.arrayBuffer();
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      const wavBlob = await audioBufferToWav(audioBuffer);
-      const audioURL = URL.createObjectURL(wavBlob);
+      console.log("Blob taille :", audioBlob.size);
 
-      audioElement.src = audioURL;
-      downloadLink.href = audioURL;
-      downloadLink.download = 'recording.wav';
+      if (audioBlob.size === 0) {
+        alert("❌ L'enregistrement semble vide.");
+        cleanupAudioContext();
+        clones.forEach(audio => audio.remove());
+        return;
+      }
 
-      recButton.style.color = "";
-      recButton.innerHTML = '<i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer';
+      try {
+        const arrayBuffer = await audioBlob.arrayBuffer();
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        const wavBlob = await audioBufferToWav(audioBuffer);
+        const audioURL = URL.createObjectURL(wavBlob);
+
+        audioElement.src = audioURL;
+        downloadLink.href = audioURL;
+        downloadLink.download = 'recording.wav';
+
+        recButton.style.color = "";
+        recButton.innerHTML = '<i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer';
+      } catch (err) {
+        console.error("Erreur de décodage audio :", err);
+        alert("❌ Erreur lors de la conversion.");
+      }
 
       cleanupAudioContext();
-
-
-      audioArray.forEach(audio => audio.remove());
+      clones.forEach(audio => audio.remove());
     };
 
+    // ▶️ Lire les clones l'un après l'autre pendant l'enregistrement
     mediaRecorder.start();
+    console.log("🎙️ Enregistrement démarré...");
     recButton.style.color = "red";
     recButton.textContent = "En cours...";
+    console.log("mediaRecorder started, state:", mediaRecorder.state);
+
+    let currentIndex = 0;
+    const playNext = () => {
+      if (!clones[currentIndex]) return;
+
+      const audio = clones[currentIndex];
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        audio.onended = () => {
+          currentIndex += 1;
+          if (currentIndex < clones.length) {
+            playNext();
+          } else {
+            stopButton.click(); // Stop automatiquement à la fin
+          }
+        };
+      }).catch(err => console.warn("Playback error:", err));
+    };
+
+    playNext();
   });
 
   stopButton.addEventListener('click', () => {
@@ -118,23 +171,59 @@ function setupRecording() {
   });
 
   function cleanupAudioContext() {
-    if (sourceNodes.length) {
-      sourceNodes.forEach(node => node.disconnect());
-      sourceNodes = [];
-    }
-
-    if (destination) {
-      destination.disconnect();
-      destination = null;
-    }
-
-    if (audioContext && audioContext.state !== 'closed') {
-      audioContext.close();
-    }
-
+    sourceNodes.forEach(node => node.disconnect());
+    sourceNodes = [];
+    if (destination) destination.disconnect();
+    if (audioContext && audioContext.state !== 'closed') audioContext.close();
     audioContext = null;
   }
 }
+
+// === Convert audio buffer to WAV ===
+async function audioBufferToWav(audioBuffer) {
+  const numOfChan = audioBuffer.numberOfChannels;
+  const length = audioBuffer.length * numOfChan * 2 + 44;
+  const buffer = new ArrayBuffer(length);
+  const view = new DataView(buffer);
+  const channels = [];
+  const sampleRate = audioBuffer.sampleRate;
+
+  writeUTFBytes(view, 0, 'RIFF');
+  view.setUint32(4, 44 + audioBuffer.length * numOfChan * 2, true);
+  writeUTFBytes(view, 8, 'WAVE');
+  writeUTFBytes(view, 12, 'fmt ');
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, numOfChan, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2 * numOfChan, true);
+  view.setUint16(32, numOfChan * 2, true);
+  view.setUint16(34, 16, true);
+  writeUTFBytes(view, 36, 'data');
+  view.setUint32(40, audioBuffer.length * numOfChan * 2, true);
+
+  for (let i = 0; i < numOfChan; i++) {
+    channels.push(audioBuffer.getChannelData(i));
+  }
+
+  let offset = 44;
+  for (let i = 0; i < audioBuffer.length; i++) {
+    for (let j = 0; j < numOfChan; j++) {
+      const sample = Math.max(-1, Math.min(1, channels[j][i]));
+      view.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+      offset += 2;
+    }
+  }
+
+  return new Blob([buffer], { type: 'audio/wav' });
+}
+
+function writeUTFBytes(view, offset, string) {
+  for (let i = 0; i < string.length; i++) {
+    view.setUint8(offset + i, string.charCodeAt(i));
+  }
+}
+
 
 // Convertir le buffer audio en fichier WAV
 async function audioBufferToWav(audioBuffer) {
@@ -193,6 +282,7 @@ function initializeTimeline() {
 
   const localStorageKey = `playOrder_${compositionId}`;
   let playOrder = JSON.parse(localStorage.getItem(localStorageKey)) || [];
+  console.log("PlayOrder au moment de l'enregistrement :", playOrder);
 
   const renderSelectedOrder = () => {
     selectedOrderList.innerHTML = '';
