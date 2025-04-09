@@ -44,6 +44,7 @@
 
 #compositions-title {
   margin-bottom: 60px;
+  text-align: center;
 }
 
 .composition-subtitle {
@@ -189,6 +190,14 @@ button.dropdown-item:hover {
   transition: background 0.3s ease, transform 0.2s ease;
 }
 
+.centered-meta {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .composition-meta-line:hover {
   background: rgba(255, 255, 255, 0.08);
   transform: translateY(-1px);
@@ -200,7 +209,6 @@ button.dropdown-item:hover {
   animation: pulse 2s infinite ease-in-out;
 }
 
-/* Animation douce de pulsation */
 @keyframes pulse {
   0%, 100% {
     opacity: 0.8;
@@ -210,4 +218,15 @@ button.dropdown-item:hover {
     opacity: 1;
     transform: scale(1.1);
   }
+}
+
+.big-plus i {
+  color: #ffeb3b;
+  font-size: 3.5rem;
+  transition: color 0.3s ease;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.big-plus i:hover {
+  color: #ffffff;
 }
