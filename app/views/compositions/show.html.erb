@@ -1,5 +1,11 @@
 <%= javascript_include_tag 'upload_recording', 'data-turbo-track': 'reload' %>
 <%= javascript_include_tag 'compositions_show', 'data-turbo-track': 'reload' %>
+<% if params[:reload] %>
+  <script>
+    // Force un hard refresh sans le paramètre "reload" (donc une fois uniquement)
+    window.location.href = window.location.href.split("?")[0];
+  </script>
+<% end %>
 
 
 <div class="composition" data-composition-id="<%= @composition.id %>">
