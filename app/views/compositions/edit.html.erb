@@ -3,19 +3,26 @@
 
 <div class="composition" data-composition-id="<%= @composition.id %>">
   <div>
-    <ul>
-      <li><h1><%= @composition.title %></h1></li>
-        <div class="badges-container">
-          <span class="badge">
-            <i class="fa-solid fa-music"></i>
-            <%= @composition.key_signature %>
-          </span>
-          <span class="badge">
-            <i class="fa-solid <%= @composition.mood == 'majeur' ? 'fa-sun' : 'fa-cloud-rain' %>"></i>
-            <%= @composition.mood.capitalize %>
-        </span>
-      </div>
-    </ul>
+      <ul>
+    <li><h1><%= @composition.title %></h1></li>
+  </ul>
+
+  <div class="badges-container">
+    <span class="badge">
+      <i class="fa-solid fa-music"></i>
+      <%= @composition.key_signature %>
+    </span>
+    <span class="badge">
+      <i class="fa-solid <%= @composition.mood == 'majeur' ? 'fa-sun' : 'fa-cloud-rain' %>"></i>
+      <%= @composition.mood.capitalize %>
+    </span>
+  </div>
+
+  <% if @composition.challenge_description.present? %>
+  <p class="challenge-description text-bright">
+    <i class="fa-solid fa-bolt"></i> <%= @composition.challenge_description %>
+  </p>
+<% end %>
   </div>
 
       <div id="records">

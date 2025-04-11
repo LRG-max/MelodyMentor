@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_11_175346) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_11_215120) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -63,6 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_11_175346) do
     t.string "audio_url"
     t.string "mood", default: "{}"
     t.text "play_order"
+    t.text "challenge_description"
     t.index ["user_id"], name: "index_compositions_on_user_id"
   end
 
