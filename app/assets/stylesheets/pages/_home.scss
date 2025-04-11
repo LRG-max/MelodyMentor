@@ -101,3 +101,62 @@ html, body {
     grid-template-columns: 1fr;
   }
 }
+
+.counter {
+  text-align: center;
+  padding: 30px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  margin-top: 30px;
+  border-radius: 16px;
+  animation: pulseCount 4s infinite;
+  box-shadow: 0 0 15px rgba(130, 226, 243, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.counter:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 25px rgba(130, 226, 243, 0.6);
+}
+
+.counter h3 {
+  font-size: 2rem;
+  font-family: "Tektur", Helvetica, sans-serif;
+  background: linear-gradient(90deg, #82e2f3, #ffffff);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes pulseCount {
+  0% { box-shadow: 0 0 10px rgba(130, 226, 243, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(130, 226, 243, 0.6); }
+  100% { box-shadow: 0 0 10px rgba(130, 226, 243, 0.3); }
+}
+
+.testimonials {
+  text-align: center;
+  padding: 50px 20px;
+  margin-top: 40px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  box-shadow: 0 0 15px rgba(130, 226, 243, 0.1);
+  backdrop-filter: blur(4px);
+  color: #fff;
+}
+
+.testimonials h3 {
+  font-family: "Tektur", Helvetica, sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+  color: #82e2f3;
+  text-shadow: 0 0 8px rgba(130, 226, 243, 0.2);
+}
+
+.testimonial {
+  font-style: italic;
+  margin: 10px auto;
+  font-size: 1.1rem;
+  color: #ddd;
+  max-width: 600px;
+  line-height: 1.6;
+}

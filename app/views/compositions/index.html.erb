@@ -6,9 +6,9 @@
       <% @compositions.compact.sort_by(&:created_at).reverse.each do |composition| %>
       <% next if composition.nil? || !composition.persisted? %>
         <li class="composition-item">
-          <div class="composition-info">
             <!-- Titre -->
-            <h2><%= link_to composition.title, edit_composition_path(composition), data: { turbo: false } %></h2>
+            <h2><%= link_to composition.title, composition_path(composition), data: { turbo: false } %></h2>
+          <div class="composition-info">
 
             <!-- Sous-titre : tonalité et humeur -->
             <div class="composition-subtitle">
@@ -36,21 +36,26 @@
           <% end %>
 
           <!-- Menu déroulant avec trois points -->
-          <div class="dropdown">
-            <button class="dropdown-btn">⋮</button> <!-- Trois points -->
-            <div class="dropdown-content">
-              <%= link_to 'Éditer', edit_composition_path(composition), class: 'dropdown-item' %>
-              <% if composition && composition.audio.attached? %>
-              <%= link_to 'Télécharger', url_for(composition.audio), class: 'dropdown-item', download: composition.title %>
-              <% end %>
-              <%= form_with model: composition, method: :delete, local: true,
-                           data: { turbo: false, confirm: "Es-tu sûr de vouloir supprimer cette composition ?" } do %>
-                <button type="submit" class="dropdown-item">Supprimer</button>
-              <% end %>
-            </div>
+          <div class="del-compo">
+      <%= form_with model: composition, method: :delete, local: true,
+                  data: { turbo: false, confirm: "Es-tu sûr de vouloir supprimer cette composition ?" }, class: "delete-form" do %>
+        <button type="submit" class="delete-button" aria-label="Supprimer la composition">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+    <% end %>
+  </div>
+
+
+        </div>
+      </li>
+      <% end %>
+
+      <% if @compositions.empty? %>
+        <li class="composition-item">
+          <div class="no-composition">
+            <i class="fa-solid fa-file-audio"></i>
+            <p>Aucune composition trouvée.</p>
           </div>
-
-
     <% end %>
   </li>
             <li class="composition-item">

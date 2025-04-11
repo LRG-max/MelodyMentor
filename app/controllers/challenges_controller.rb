@@ -7,7 +7,7 @@ class ChallengesController < ApplicationController
 
   def show
     @challenge = Challenge.find(params[:id])
-    @composition = current_user.compositions.create!(key_signature: "DO")
+    @composition = current_user.compositions.create(title: @challenge.title, key_signature: "DO")
   end
 
   def random
