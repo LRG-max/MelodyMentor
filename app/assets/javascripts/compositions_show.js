@@ -1,9 +1,9 @@
-// === Global variables ===
+
 let mediaRecorder = null;
 let audioContext = null;
 
-// === On Turbo Load ===
-document.addEventListener('turbo:load', () => {
+
+document.addEventListener('turbo:load', function () {
   console.log("Turbo:load déclenché");
 
   setTimeout(() => {
@@ -13,7 +13,7 @@ document.addEventListener('turbo:load', () => {
   }, 500);
 });
 
-// === Script Initialization ===
+
 function initializeScript() {
   const compositionElement = document.querySelector('.composition');
   if (!compositionElement) {
@@ -30,7 +30,7 @@ function initializeScript() {
   console.log("ID de la composition : ", compositionId);
 }
 
-// === Setup Audio Recording (Chrome Friendly) ===
+
 function setupRecording() {
   const recButton = document.getElementById('record');
   const stopButton = document.getElementById('stop');
@@ -133,7 +133,7 @@ function setupRecording() {
       clones.forEach(audio => audio.remove());
     };
 
-    // ▶️ Lire les clones l'un après l'autre pendant l'enregistrement
+
     mediaRecorder.start();
     console.log("🎙️ Enregistrement démarré...");
     recButton.style.color = "red";
@@ -152,7 +152,7 @@ function setupRecording() {
           if (currentIndex < clones.length) {
             playNext();
           } else {
-            stopButton.click(); // Stop automatiquement à la fin
+            stopButton.click();
           }
         };
       }).catch(err => console.warn("Playback error:", err));
@@ -179,7 +179,7 @@ function setupRecording() {
   }
 }
 
-// === Convert audio buffer to WAV ===
+
 async function audioBufferToWav(audioBuffer) {
   const numOfChan = audioBuffer.numberOfChannels;
   const length = audioBuffer.length * numOfChan * 2 + 44;
@@ -225,7 +225,7 @@ function writeUTFBytes(view, offset, string) {
 }
 
 
-// Convertir le buffer audio en fichier WAV
+
 async function audioBufferToWav(audioBuffer) {
   const numOfChan = audioBuffer.numberOfChannels;
   const length = audioBuffer.length * numOfChan * 2 + 44;
@@ -270,7 +270,7 @@ function writeUTFBytes(view, offset, string) {
   }
 }
 
-// Initialisation de la timeline (gestion des échantillons audio)
+
 function initializeTimeline() {
   const sampleList = document.getElementById('sample-list');
   const selectedOrderList = document.getElementById('selected-order');
@@ -333,7 +333,7 @@ function initializeTimeline() {
     renderSelectedOrder();
   });
 
-  // Boutons de lecture
+
   const togglePlayButton = (audioElement, icon) => {
     if (!audioElement.paused) {
       audioElement.pause();
@@ -421,3 +421,40 @@ if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
   console.log("Hard refresh détecté");
 }
 }
+
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest(".audio-button");
+  if (!button) return;
+
+  const audioId = button.dataset.audioId;
+  const audio = document.getElementById(audioId);
+  const icon = button.querySelector("i");
+
+  if (!audio) return;
+
+  if (!audio.paused) {
+    audio.pause();
+    audio.currentTime = 0;
+    icon.classList.remove('fa-circle-stop');
+    icon.classList.add('fa-circle-play');
+  } else {
+    document.querySelectorAll('audio').forEach(a => {
+      a.pause();
+      a.currentTime = 0;
+      const i = document.querySelector(`button[data-audio-id="${a.id}"] i`);
+      i?.classList.remove('fa-circle-stop');
+      i?.classList.add('fa-circle-play');
+    });
+
+    audio.play().then(() => {
+      icon.classList.remove('fa-circle-play');
+      icon.classList.add('fa-circle-stop');
+    });
+
+    audio.addEventListener('ended', () => {
+      icon.classList.remove('fa-circle-stop');
+      icon.classList.add('fa-circle-play');
+    }, { once: true });
+  }
+});

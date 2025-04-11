@@ -1,10 +1,10 @@
-document.addEventListener("turbo:load", () => {
+document.addEventListener("turbo:load", function () {
   const saveBtn = document.getElementById("save-recording");
   const audioElement = document.querySelector("#records audio");
 
   if (!saveBtn || !audioElement) return;
 
-  saveBtn.addEventListener("click", () => {
+  saveBtn.addEventListener("click", function () {
     const blobUrl = audioElement.src;
     if (!blobUrl || !blobUrl.startsWith("blob:")) {
       alert("Aucun enregistrement à sauvegarder !");

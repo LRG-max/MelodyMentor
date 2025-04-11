@@ -19,7 +19,7 @@
           <% end %>
 
         <div class="defi">
-          <%= button_to "🔄 Nouveau défi", challenges_path, method: :get, class: "button pulse" %>
+          <%= link_to "🔄 Nouveau défi", random_challenge_path, class: "button pulse" %>
         </div>
   </div>
 <% else %>
