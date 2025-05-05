@@ -12,23 +12,21 @@
   </head>
 
  <body>
-  <div class="side-menu">
-  <% if current_page?(root_path) %>
-    <%= render "shared/menu" %>
-  <% else %>
-    <%= render "shared/menu" %>
-  <% end %>
+  <div class="side-menu d-block">
+    <%= render "shared/menu_home" %>
 </div>
 
-  <div class="main-content">
+  <div class="main-content px-3 px-md-5 py-3">
     <% if content_for?(:standalone_layout) %>
       <main class="p-4">
         <%= yield :standalone_layout %>
       </main>
     <% else %>
       <main class="container-fluid">
-        <div class="d-flex">
-          <%= yield %>
+        <div class="row">
+          <div class="col-12">
+            <%= yield %>
+          </div>
         </div>
       </main>
     <% end %>

@@ -1,6 +1,6 @@
 class CompositionsController < ApplicationController
   def index
-    @compositions = Composition.all.uniq { |composition| composition.title }
+    @compositions = current_user.compositions.uniq { |composition| composition.title } if user_signed_in?
   end
 
   def new
@@ -23,7 +23,8 @@ class CompositionsController < ApplicationController
   end
 
   def destroy
-    @composition = Composition.find(params[:id])
+    @composition = current_user.compositions.find_by(id: params[:id])
+    redirect_to compositions_path, alert: "Accès non autorisé." unless @composition
     @composition.destroy
 
     respond_to do |format|
@@ -33,13 +34,15 @@ class CompositionsController < ApplicationController
   end
 
   def show
-    @composition = Composition.find(params[:id])
+    @composition = current_user.compositions.find_by(id: params[:id])
+    redirect_to compositions_path, alert: "Accès non autorisé." unless @composition
     @key_signature = @composition.key_signature # Récupérer la tonalité choisie
   end
 
 
   def save_audio
-    @composition = Composition.find(params[:id])
+    @composition = current_user.compositions.find_by(id: params[:id])
+    redirect_to compositions_path, alert: "Accès non autorisé." unless @composition
 
     if params[:audio]
       @composition.audio.attach(params[:audio])
@@ -61,7 +64,8 @@ class CompositionsController < ApplicationController
   end
 
   def update
-    @composition = Composition.find(params[:id])
+    @composition = current_user.compositions.find_by(id: params[:id])
+    redirect_to compositions_path, alert: "Accès non autorisé." unless @composition
 
     # Si la composition se met à jour avec succès
     if @composition.update(composition_params)
@@ -69,6 +73,12 @@ class CompositionsController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def update_order
+    @composition = Composition.find(params[:id])
+    @composition.update(play_order: params[:play_order])
+    head :ok
   end
 
   private

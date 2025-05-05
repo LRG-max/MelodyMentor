@@ -134,3 +134,9 @@ body {
     grid-column: 1; /* Main content takes the full width */
   }
 }
+
+#side-menu {
+  top: 0;
+  left: 0;
+  height: 100vh;
+}

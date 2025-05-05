@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     member do
       post :save_audio
     end
+    member do
+      patch :update_order
+    end
   end
 
   resources :challenges, only: [:index, :show]
