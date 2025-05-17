@@ -45,25 +45,26 @@
           </div>
 
           <!-- Étape 3 -->
-          <div class="form-step" data-composition-form-target="step">
-            <%= f.input :key_signature, label: raw('<i class="fa-solid fa-guitar"></i>&nbsp;Sur quelle note veux-tu commencer ?'),
-              label_html: { class: "hero-label" },
-              as: :select,
-              input_html: {
-                class: "form-control",
-                id: "key-signature-select",
-                data: { composition_form_target: "keySelect" }
-              },
-              collection: [],
-              prompt: "Choisis une note" %>
-              <div class="form-navigation">
-                  <button type="button" class="button pulse retour" data-action="click->composition-form#prevStep">
-                    <i class="fa-solid fa-arrow-left"></i>&nbsp;Retour
-                  </button>
+        <div class="form-step" data-composition-form-target="step">
+          <%= f.input :key_signature, label: raw('<i class="fa-solid fa-guitar"></i>&nbsp;Sur quelle note veux-tu commencer ?'),
+            label_html: { class: "hero-label" },
+            as: :select,
+            input_html: {
+              class: "form-control",
+              id: "key-signature-select",
+              data: { composition_form_target: "keySelect" }
+            },
+            collection: [],
+            prompt: "Choisis une note" %>
 
-                  <button type="button" class="button pulse fill" data-action="click->composition-form#nextStep">
-                    <i class="fa-solid fa-arrow-right"></i>&nbsp;Suivant
-                  </button>
+          <div class="form-navigation">
+            <button type="button" class="button pulse retour" data-action="click->composition-form#prevStep">
+              <i class="fa-solid fa-arrow-left"></i>&nbsp;Retour
+            </button>
+
+            <%= button_tag(type: "submit", class: "button pulse retour") do %>
+              <i class="fa-solid fa-check"></i>&nbsp;Terminer
+            <% end %>
           </div>
         </div>
       <% end %>
