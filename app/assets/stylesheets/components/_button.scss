@@ -1,17 +1,3 @@
-
-// /*
-// https://developer.mozilla.org/en/docs/Web/CSS/box-shadow
-// box-shadow: [inset?] [top] [left] [blur] [size] [color];
-
-// Tips:
-// - We're setting all the blurs to 0 since we want a solid fill.
-// - Add the inset keyword so the box-shadow is on the inside of the element
-// - Animating the inset shadow on hover looks like the element is filling in from whatever side you specify ([top] and [left] accept negative values to become [bottom] and [right])
-// - Multiple shadows can be stacked
-// - If you're animating multiple shadows, be sure to keep the same number of shadows on hover/focus as non-hover/focus (even if you have to create a transparent shadow) so the animation is smooth. Otherwise, you'll get something choppy.
-// */
-
-// // Animate the size, inside
 .fill:hover,
 .fill:focus {
 box-shadow: inset 0 0 0 2em var(--hover);
@@ -42,7 +28,6 @@ danger: #ff4d4d
   }
 }
 
-// // Now every button will have different colors as set above. We get to use the same structure, only changing the custom properties.
 button {
   color: var(--color);
   transition: 0.25s;

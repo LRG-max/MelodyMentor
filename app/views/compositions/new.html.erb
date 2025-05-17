@@ -1,53 +1,72 @@
 <%= content_for :standalone_layout do %>
   <div class="main-wrapper">
-    <div class="composition-new-container">
-      <h2><i class="fa-solid fa-music"></i>&nbsp &nbsp Configure ta composition!</h2>
+    <div class="composition-new-container" data-controller="composition-form">
+      <h2><i class="fa-solid fa-music"></i>&nbsp;&nbsp;Configure ta composition !</h2>
+
+      <!-- Barre de progression -->
+      <div class="progress-container">
+        <div class="progress-bar" data-composition-form-target="progress"></div>
+      </div>
+
       <%= simple_form_for(@composition) do |f| %>
-        <div class="form-inputs composition-item">
-          <%= f.input :title, label: "Titre de la composition" %>
-          <%= f.input :mood,
-            label: "Humeur musicale",
-            as: :select,
-            input_html: { class: "form-control", id: "mood-select" },
-            collection: [["☀️ Pétillant", "majeur"], ["🌧️ Mélancolique", "mineur"]],
-            prompt: "Choisir une humeur" %>
-          <%= f.input :key_signature,
-            label: "Note de départ (tonalité)",
-            as: :select,
-            input_html: { class: "form-control", id: "key-signature-select" },
-            collection: [],
-            prompt: "Choisir une note" %>
+        <div>
+          <!-- Étape 1 -->
+          <div class="form-step active" data-composition-form-target="step">
+            <%= f.input :title, label: raw('<i class="fa-solid fa-music"></i>&nbsp;Quel nom veux-tu donner à ta musique ?'),
+              label_html: { class: "hero-label" } %>
+            <button type="button" class="button pulse" data-composition-form-target="nextButton">
+              Suivant&nbsp;<i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+          <!-- Étape 2 -->
+          <div class="form-step" data-composition-form-target="step">
+            <%= f.input :mood, label: raw('<i class="fa-solid fa-rainbow";"></i>&nbsp;Quelle ambiance veux-tu créer ?'),
+              label_html: { class: "hero-label" },
+              as: :select,
+              input_html: {
+                class: "form-control",
+                id: "mood-select",
+                data: { composition_form_target: "moodSelect" }
+              },
+              collection: [["☀️ Pétillante", "majeur"], ["🌧️ Mélancolique", "mineur"]],
+              prompt: "Choisis une ambiance",
+              label_html: { class: "hero-label" }  %>
+                <div class="form-navigation">
+                  <button type="button" class="button pulse retour" data-action="click->composition-form#prevStep">
+                    <i class="fa-solid fa-arrow-left"></i>&nbsp;Retour
+                  </button>
+
+                  <button type="button" class="button pulse fill" data-action="click->composition-form#nextStep">
+                    <i class="fa-solid fa-arrow-right"></i>&nbsp;Suivant
+                  </button>
+                </div>
+              </div>
+          </div>
+
+          <!-- Étape 3 -->
+          <div class="form-step" data-composition-form-target="step">
+            <%= f.input :key_signature, label: raw('<i class="fa-solid fa-guitar"></i>&nbsp;Sur quelle note veux-tu commencer ?'),
+              label_html: { class: "hero-label" },
+              as: :select,
+              input_html: {
+                class: "form-control",
+                id: "key-signature-select",
+                data: { composition_form_target: "keySelect" }
+              },
+              collection: [],
+              prompt: "Choisis une note" %>
+              <div class="form-navigation">
+                  <button type="button" class="button pulse retour" data-action="click->composition-form#prevStep">
+                    <i class="fa-solid fa-arrow-left"></i>&nbsp;Retour
+                  </button>
+
+                  <button type="button" class="button pulse fill" data-action="click->composition-form#nextStep">
+                    <i class="fa-solid fa-arrow-right"></i>&nbsp;Suivant
+                  </button>
+          </div>
         </div>
-        <div class="form-actions">
-      <%= f.button :submit, "Enregistrer la composition", class: "btn-submit pulse" %>
       <% end %>
+    </div>
   </div>
-
-  <script>
-  document.addEventListener("turbo:load", function() {
-    const moodSelect = document.getElementById("mood-select");
-    const keySignatureSelect = document.getElementById("key-signature-select");
-
-    const options = {
-      "majeur": ["DO", "SOL"],
-      "mineur": ["MI", "LA"]
-    };
-
-    if (moodSelect && keySignatureSelect) {
-      moodSelect.addEventListener("change", function() {
-        const selectedMood = moodSelect.value;
-        keySignatureSelect.innerHTML = '<option value="">Choisir une note</option>';
-
-        if (options[selectedMood]) {
-          options[selectedMood].forEach(note => {
-            const option = document.createElement("option");
-            option.value = note;
-            option.textContent = note;
-            keySignatureSelect.appendChild(option);
-          });
-        }
-      });
-    }
-  });
-</script>
 <% end %>
