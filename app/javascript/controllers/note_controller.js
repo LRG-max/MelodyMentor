@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["button"]
 
   connect() {
-    console.log("🎶 NoteController connecté")
+
   }
 
   toggle(event) {

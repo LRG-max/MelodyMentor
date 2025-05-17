@@ -5,7 +5,7 @@ export default class extends Controller {
   static values = { url: String }
 
   connect() {
-    console.log("🎵 UploadController connecté");
+
   }
 
   save() {
