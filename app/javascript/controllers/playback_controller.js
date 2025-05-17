@@ -21,7 +21,7 @@ export default class extends Controller {
       audio.addEventListener("ended", () => {
         this.toggleIcons(audio, icon, true)
         if (!window.sequencePaused) {
-          index += 1
+          index = (index + 1) % playOrder.length
           playNext()
         }
       }, { once: true })

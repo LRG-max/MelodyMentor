@@ -13,84 +13,75 @@ export default class extends Controller {
   }
 
   async startRecording() {
-    const playOrder = JSON.parse(localStorage.getItem(`playOrder_${this.compositionIdValue}`)) || []
-    if (playOrder.length === 0) return alert("Aucun son sélectionné à enregistrer.")
-
-    if (this.audioContext && this.audioContext.state !== 'closed') await this.audioContext.close()
+    if (this.audioContext && this.audioContext.state !== "closed") await this.audioContext.close()
     this.audioContext = new AudioContext()
-    if (this.audioContext.state === 'suspended') await this.audioContext.resume()
+    if (this.audioContext.state === "suspended") await this.audioContext.resume()
 
     this.destination = this.audioContext.createMediaStreamDestination()
     this.mediaRecorder = new MediaRecorder(this.destination.stream)
     this.audioChunks = []
 
-    const clones = playOrder.map(id => {
-      const original = document.getElementById(id)
-      if (!original) return null
-      const source = original.querySelector('source')
-      const clone = document.createElement('audio')
-      clone.src = source?.src || original.src
-      clone.crossOrigin = 'anonymous'
-      clone.preload = 'auto'
-      document.body.appendChild(clone)
-      return clone
-    }).filter(Boolean)
 
-    clones.forEach(audio => {
-      const source = this.audioContext.createMediaElementSource(audio)
-      source.connect(this.destination)
-      source.connect(this.audioContext.destination)
-      this.sourceNodes.push(source)
+    const allAudios = Array.from(document.querySelectorAll("audio")).filter(a => a.id)
+    allAudios.forEach(audio => {
+      try {
+        const source = this.audioContext.createMediaElementSource(audio)
+        source.connect(this.destination)
+        this.sourceNodes.push(source)
+      } catch (e) {
+        console.warn(`⚠️ Source déjà connectée ou erreur : ${audio.id}`, e)
+      }
     })
+
+
+    this.sourceNodes.forEach(source => source.connect(this.audioContext.destination))
 
     this.mediaRecorder.ondataavailable = e => this.audioChunks.push(e.data)
 
     this.mediaRecorder.onstop = async () => {
-      const blob = new Blob(this.audioChunks, { type: 'audio/webm' })
-      if (blob.size === 0) {
-        alert("❌ L'enregistrement est vide.")
-        this.cleanup(clones)
-        return
+      try {
+        const blob = new Blob(this.audioChunks, { type: "audio/webm" })
+        if (blob.size === 0) {
+          alert("❌ L'enregistrement est vide.")
+          return
+        }
+
+        const arrayBuffer = await blob.arrayBuffer()
+        const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer)
+        const wavBlob = await this.audioBufferToWav(audioBuffer)
+        const url = URL.createObjectURL(wavBlob)
+
+        this.audioTarget.src = url
+        this.downloadTarget.href = url
+        this.downloadTarget.download = "recording.wav"
+      } catch (e) {
+        console.error("Erreur conversion en WAV :", e)
+        alert("❌ Erreur lors de la conversion.")
+      } finally {
+        this.cleanup()
+        this.recordTarget.textContent = "Enregistrer"
       }
-
-      const arrayBuffer = await blob.arrayBuffer()
-      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer)
-      const wavBlob = await this.audioBufferToWav(audioBuffer)
-      const url = URL.createObjectURL(wavBlob)
-
-      this.audioTarget.src = url
-      this.downloadTarget.href = url
-      this.downloadTarget.download = 'recording.wav'
     }
 
     this.mediaRecorder.start()
     this.recordTarget.textContent = "En cours..."
-    let index = 0
-    const playNext = () => {
-      if (!clones[index]) return
-      const audio = clones[index]
-      audio.currentTime = 0
-      audio.play().then(() => {
-        audio.onended = () => {
-          index += 1
-          index < clones.length ? playNext() : this.stopRecording()
-        }
-      })
-    }
-    playNext()
+    console.log("🎙️ Enregistrement lancé. Lance la lecture manuellement.")
   }
 
   stopRecording() {
-    if (this.mediaRecorder && this.mediaRecorder.state !== 'inactive') {
+    if (this.mediaRecorder && this.mediaRecorder.state !== "inactive") {
       this.mediaRecorder.stop()
+      console.log("🛑 Enregistrement arrêté.")
     }
   }
 
-  cleanup(clones) {
+  cleanup() {
     this.sourceNodes.forEach(n => n.disconnect())
     if (this.destination) this.destination.disconnect()
     this.audioContext?.close()
-    clones.forEach(a => a.remove())
+    this.sourceNodes = []
+    this.destination = null
+    this.audioContext = null
   }
 
   async audioBufferToWav(audioBuffer) {
@@ -101,10 +92,10 @@ export default class extends Controller {
     const sampleRate = audioBuffer.sampleRate
     const channels = []
 
-    this.writeUTFBytes(view, 0, 'RIFF')
+    this.writeUTFBytes(view, 0, "RIFF")
     view.setUint32(4, 44 + audioBuffer.length * numChannels * 2, true)
-    this.writeUTFBytes(view, 8, 'WAVE')
-    this.writeUTFBytes(view, 12, 'fmt ')
+    this.writeUTFBytes(view, 8, "WAVE")
+    this.writeUTFBytes(view, 12, "fmt ")
     view.setUint32(16, 16, true)
     view.setUint16(20, 1, true)
     view.setUint16(22, numChannels, true)
@@ -112,7 +103,7 @@ export default class extends Controller {
     view.setUint32(28, sampleRate * numChannels * 2, true)
     view.setUint16(32, numChannels * 2, true)
     view.setUint16(34, 16, true)
-    this.writeUTFBytes(view, 36, 'data')
+    this.writeUTFBytes(view, 36, "data")
     view.setUint32(40, audioBuffer.length * numChannels * 2, true)
 
     for (let i = 0; i < numChannels; i++) {
@@ -128,7 +119,7 @@ export default class extends Controller {
       }
     }
 
-    return new Blob([buffer], { type: 'audio/wav' })
+    return new Blob([buffer], { type: "audio/wav" })
   }
 
   writeUTFBytes(view, offset, string) {

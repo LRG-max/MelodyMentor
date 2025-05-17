@@ -10,35 +10,31 @@ export default class extends Controller {
   toggle(event) {
     const button = event.currentTarget
     const audioId = button.dataset.audioId
-    const audio = document.getElementById(audioId)
+    const original = document.getElementById(audioId)
     const icon = button.querySelector("i")
 
-    if (!audio || !icon) return
+    if (!original || !icon) return
 
-    if (!audio.paused) {
-      audio.pause()
-      audio.currentTime = 0
-      icon.classList.remove('fa-circle-stop')
-      icon.classList.add('fa-circle-play')
-    } else {
 
-      document.querySelectorAll("audio").forEach(a => {
-        a.pause()
-        a.currentTime = 0
-        const otherIcon = document.querySelector(`button[data-audio-id='${a.id}'] i`)
-        otherIcon?.classList.remove("fa-circle-stop")
-        otherIcon?.classList.add("fa-circle-play")
-      })
+    const clone = original.cloneNode(true)
+    clone.id = `${audioId}-clone-${Date.now()}`
+    clone.crossOrigin = "anonymous"
+    document.body.appendChild(clone)
 
-      audio.play().then(() => {
-        icon.classList.remove('fa-circle-play')
-        icon.classList.add('fa-circle-stop')
-      })
+    icon.classList.remove("fa-circle-play")
+    icon.classList.add("fa-circle-stop")
 
-      audio.addEventListener("ended", () => {
+    clone.play().then(() => {
+      clone.addEventListener("ended", () => {
         icon.classList.remove("fa-circle-stop")
         icon.classList.add("fa-circle-play")
+        clone.remove()
       }, { once: true })
-    }
+    }).catch(err => {
+      console.warn("Erreur de lecture du clone :", err)
+      icon.classList.remove("fa-circle-stop")
+      icon.classList.add("fa-circle-play")
+      clone.remove()
+    })
   }
 }
