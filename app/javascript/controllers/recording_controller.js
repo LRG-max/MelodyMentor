@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import * as Tone from "tone"
 
 export default class extends Controller {
   static targets = ["record", "stop", "audio", "download"]
@@ -14,13 +15,18 @@ export default class extends Controller {
 
   async startRecording() {
     if (this.audioContext && this.audioContext.state !== "closed") await this.audioContext.close()
+
     this.audioContext = new AudioContext()
     if (this.audioContext.state === "suspended") await this.audioContext.resume()
 
+
+    Tone.setContext(this.audioContext)
+
     this.destination = this.audioContext.createMediaStreamDestination()
+    window.sharedAudioContext = this.audioContext
+    window.sharedAudioDestination = this.destination
     this.mediaRecorder = new MediaRecorder(this.destination.stream)
     this.audioChunks = []
-
 
     const allAudios = Array.from(document.querySelectorAll("audio")).filter(a => a.id)
     allAudios.forEach(audio => {
@@ -32,7 +38,6 @@ export default class extends Controller {
         console.warn(`⚠️ Source déjà connectée ou erreur : ${audio.id}`, e)
       }
     })
-
 
     this.sourceNodes.forEach(source => source.connect(this.audioContext.destination))
 

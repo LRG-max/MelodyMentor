@@ -119,4 +119,47 @@
       </ul>
     </div>
   </div>
+
+  <div data-controller="piano-ui">
+    <div data-piano-ui-target="container" class="piano-container hidden">
+      <div class="piano" data-piano-ui-target="piano">
+        <div class="white-keys">
+          <% notes = [
+            ["C4", "a"], ["D4", "s"], ["E4", "d"], ["F4", "f"],
+            ["G4", "g"], ["A4", "h"], ["B4", "j"], ["C5", "k"]
+          ] %>
+          <% notes.each do |note, key| %>
+            <div class="key white"
+                data-piano-target="key"
+                data-note="<%= note %>"
+                data-keyboard="<%= key %>"
+                data-action="click->piano#playNote"><%= key.upcase %></div>
+          <% end %>
+        </div>
+
+        <div class="black-keys">
+          <% black_notes = {
+            "C#4" => ["w", 28], "D#4" => ["e", 68],
+
+            "F#4" => ["t", 148], "G#4" => ["y", 188], "A#4" => ["u", 228]
+
+          } %>
+          <% black_notes.each do |note, (key, left)| %>
+            <div class="key black"
+                data-piano-target="key"
+                data-note="<%= note %>"
+                data-keyboard="<%= key %>"
+                data-action="click->piano#playNote"
+                style="left: <%= left %>px;"></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="piano-toggle"
+      data-piano-ui-target="toggle"
+      data-action="click->piano-ui#toggle">
+    🎹
+  </div>
+  </div>
 </div>
