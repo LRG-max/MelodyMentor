@@ -1,17 +1,11 @@
-<%= javascript_include_tag 'upload_recording', 'data-turbo-track': 'reload' %>
-<%= javascript_include_tag 'compositions_show', 'data-turbo-track': 'reload' %>
+<div class="composition"
+     data-controller="recording timeline playback upload"
+     data-recording-composition-id-value="<%= @composition.id %>"
+     data-timeline-composition-id-value="<%= @composition.id %>"
+     data-playback-composition-id-value="<%= @composition.id %>"
+     data-upload-url-value="<%= save_audio_composition_path(@composition) %>">
 
-
-<% if params[:reload] %>
-  <script>
-    window.location.href = window.location.href.split("?")[0];
-  </script>
-<% end %>
-
-
-<div class="composition" data-composition-id="<%= @composition.id %>">
-  <div>
-      <ul>
+  <ul>
     <li><h1><%= @composition.title %></h1></li>
   </ul>
 
@@ -27,19 +21,32 @@
   </div>
 
   <% if @composition.challenge_description.present? %>
-  <p class="challenge-description text-bright">
-    <i class="fa-solid fa-bolt"></i> <%= @composition.challenge_description %>
-  </p>
-<% end %>
-  </div>
+    <p class="challenge-description text-bright">
+      <i class="fa-solid fa-bolt"></i> <%= @composition.challenge_description %>
+    </p>
+  <% end %>
 
   <div id="records">
-    <button id="record" aria-label="Démarrer l'enregistrement"><i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer</button>
-    <button id="stop" aria-label="Arrêter l'enregistrement"><i class="fa-solid fa-stop"></i>&nbsp Stop</button>
-    <audio controls></audio>
-    <a id="download" href="" download aria-label="Télécharger l'enregistrement"><i class="fa-solid fa-download"></i>&nbsp Télécharger</a>
-    <button id="save-recording" data-url="<%= save_audio_composition_path(@composition) %>" aria-label="Sauvegarder l'enregistrement">
-      <i class="fa-solid fa-floppy-disk"></i></i>&nbsp Sauvegarder
+    <button data-recording-target="record" data-action="click->recording#startRecording">
+      <i class="fa-solid fa-record-vinyl"></i>&nbsp Enregistrer
+    </button>
+
+    <button data-recording-target="stop" data-action="click->recording#stopRecording">
+      <i class="fa-solid fa-stop"></i>&nbsp Stop
+    </button>
+
+    <audio controls
+          data-recording-target="audio"
+          data-upload-target="audio">
+    </audio>
+
+    <a href="#" download data-recording-target="download">
+      <i class="fa-solid fa-download"></i>&nbsp Télécharger
+    </a>
+
+    <button data-upload-target="save"
+            data-action="click->upload#save">
+      <i class="fa-solid fa-floppy-disk"></i>&nbsp Sauvegarder
     </button>
   </div>
 
@@ -61,56 +68,98 @@
     ] %>
 
     <div class="ma-compo">
-      <ul id="selected-order">
-        <!-- La liste sera remplie dynamiquement par JavaScript -->
+      <ul id="selected-order" data-timeline-target="selectedList">
+        <!-- La liste sera remplie dynamiquement -->
       </ul>
+
       <div class="composition-actions">
-        <button class="button pulse btn-pulse" id="play-sequence">
+        <button class="button pulse btn-pulse" data-action="click->playback#playSequence">
           <i class="fa-solid fa-play"></i> Jouer ma composition
         </button>
-        <button class="button pulse" id="pause-sequence">
+        <button class="button pulse" data-action="click->playback#pauseSequence">
           <i class="fa-solid fa-pause"></i> Pause
         </button>
-        <button class="button pulse" id="reset-order">
+        <button class="button pulse" data-action="click->timeline#resetOrder">
           <i class="fa-solid fa-rotate-right"></i> Réinitialiser
         </button>
       </div>
     </div>
 
-   <div class="accords">
+    <div class="accords">
       <h3>Accords à ajouter</h3>
-      <ul id="sample-list">
+      <ul id="sample-list" data-timeline-target="sampleList" data-action="click->timeline#addToOrder">
         <% audio_files.each do |audio| %>
           <% filename = File.basename(audio[:src], File.extname(audio[:src])) %>
 
-          <% if @composition.key_signature == 'DO' || @composition.key_signature == 'do' %>
-            <% show_accord = audio[:src].include?('Do-Lam') %>
-          <% elsif @composition.key_signature == 'SOL' || @composition.key_signature == 'sol' %>
-            <% show_accord = audio[:src].include?('Sol-Mim') %>
-          <% elsif @composition.key_signature == 'MI' || @composition.key_signature == 'mi' %>
-            <% show_accord = audio[:src].include?('Sol-Mim') %>
-          <% elsif @composition.key_signature == 'LA' || @composition.key_signature == 'la' %>
-            <% show_accord = audio[:src].include?('Do-Lam') %>
-          <% else %>
-            <% show_accord = false %>
-          <% end %>
+          <% show_accord =
+              case @composition.key_signature.downcase
+              when 'do', 'la' then audio[:src].include?('Do-Lam')
+              when 'sol', 'mi' then audio[:src].include?('Sol-Mim')
+              else false
+              end %>
 
-         <% if show_accord %>
-          <li>
-            <div class="sample-container">
-              <button class="audio-button" data-audio-id="<%= audio[:id] %>">
-                <i class="fa-solid fa-circle-play"></i>
-                <div><%= filename %></div>
-              </button>
-              <button class="add-to-order" data-audio-id="<%= audio[:id] %>">+</button>
-              <audio id="<%= audio[:id] %>">
-                <source src="<%= audio[:src] %>" type="audio/mp3">
-              </audio>
-            </div>
-          </li>
+          <% if show_accord %>
+            <li>
+              <div class="sample-container">
+                <button class="audio-button"
+                    data-controller="note"
+                    data-action="click->note#toggle"
+                    data-audio-id="<%= audio[:id] %>">
+              <i class="fa-solid fa-circle-play"></i>
+              <div><%= filename %></div>
+            </button>
+                <button class="add-to-order" data-audio-id="<%= audio[:id] %>">+</button>
+                <audio id="<%= audio[:id] %>">
+                  <source src="<%= audio[:src] %>" type="audio/mp3">
+                </audio>
+              </div>
+            </li>
           <% end %>
         <% end %>
       </ul>
     </div>
-</div>
+  </div>
+
+  <div data-controller="piano-ui">
+    <div data-piano-ui-target="container" class="piano-container hidden">
+      <div class="piano" data-piano-ui-target="piano">
+        <div class="white-keys">
+          <% notes = [
+            ["C4", "a"], ["D4", "s"], ["E4", "d"], ["F4", "f"],
+            ["G4", "g"], ["A4", "h"], ["B4", "j"], ["C5", "k"]
+          ] %>
+          <% notes.each do |note, key| %>
+            <div class="key white"
+                data-piano-target="key"
+                data-note="<%= note %>"
+                data-keyboard="<%= key %>"
+                data-action="click->piano#playNote"><%= key.upcase %></div>
+          <% end %>
+        </div>
+
+        <div class="black-keys">
+          <% black_notes = {
+            "C#4" => ["w", 28], "D#4" => ["e", 68],
+
+            "F#4" => ["t", 148], "G#4" => ["y", 188], "A#4" => ["u", 228]
+
+          } %>
+          <% black_notes.each do |note, (key, left)| %>
+            <div class="key black"
+                data-piano-target="key"
+                data-note="<%= note %>"
+                data-keyboard="<%= key %>"
+                data-action="click->piano#playNote"
+                style="left: <%= left %>px;"></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <div class="piano-toggle"
+      data-piano-ui-target="toggle"
+      data-action="click->piano-ui#toggle">
+    🎹
+  </div>
+  </div>
 </div>

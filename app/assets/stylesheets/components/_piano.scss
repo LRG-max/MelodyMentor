@@ -1,0 +1,103 @@
+.piano {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 200px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  z-index: 9999;
+}
+
+.white-keys {
+  display: flex;
+  height: 100%;
+}
+
+.black-keys {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 60%;
+  width: 100%;
+  pointer-events: none;
+}
+
+.key {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  font-size: 14px;
+  user-select: none;
+  cursor: pointer;
+  border: 1px solid #000;
+  transition: background 0.1s ease;
+}
+
+.white {
+  background: white;
+  width: 40px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+.black {
+  background: black;
+  width: 25px;
+  height: 100%;
+  z-index: 2;
+  position: absolute;
+  color: transparent;
+  pointer-events: auto;
+}
+
+.key.active,
+.key:active {
+  background: #aaa;
+}
+
+.piano-toggle {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: #000;
+  color: #fff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 10000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.piano-toggle:hover {
+  transform: scale(1.1);
+}
+
+.piano-container {
+  position: fixed;
+  bottom: 4.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  z-index: 9999;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.piano-container.hidden {
+  transform: translateX(-50%) translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}

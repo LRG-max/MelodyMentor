@@ -4,6 +4,3 @@
 //= link_tree ../../../vendor/javascript .js
 //= link popper.js
 //= link bootstrap.min.js
-//= link compositions_show.js
-//= link upload_recording.js
-//= link compositions_form.js
